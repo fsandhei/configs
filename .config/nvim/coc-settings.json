@@ -1,0 +1,9 @@
+{
+   "suggest.noselect": true,
+   "languageserver": {
+      "python": {
+         "command": "pyright",
+         "filetypes": "py"
+      }
+   }
+}
