@@ -14,7 +14,7 @@ setopt autocd             # if only directory path is entered, cd there.
 [ -f "$ZDOTDIR/aliasrc" ]  && source "$ZDOTDIR/aliasrc"
 [ ! -d "$HOME/.cache/zsh" ] && mkdir "$HOME/.cache/zsh"
 
-fpath=(/home/fredrsa/.zsh/plugins/zsh-completions/src
+fpath=(/home/fredrik/.config/zsh/plugins/zsh-completions/src
        $ZDOTDIR/.zfunc
        $fpath
 )
