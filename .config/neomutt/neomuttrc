@@ -1,0 +1,97 @@
+# Encryption settings
+#
+# Use GPGME
+set pgp_default_key = 90E4EBED441154368E7738B8CC99A08C046DC29B
+set crypt_use_gpgme
+
+#
+# IMAP GMail settings
+set imap_user = "fredrik.sandhei@gmail.com"
+
+# Source in encrypted password
+source "gpg -dq $XDG_CONFIG_HOME/neomutt/passwords.txt.gpg |"
+
+# Mailboxes
+set folder = "imaps://imap.gmail.com:993/[Gmail]/"
+
+# SMTP GMail settings
+set smtp_url = "smtps://fredrik.sandhei@gmail.com@smtp.gmail.com:465"
+set smtp_authenticators = "gssapi:login"
+
+# GMail user settings
+set from = "fredrik.sandhei@gmail.com"
+set real_name = "Fredrik Sandhei"
+
+set spool_file = "+All Mail"
+set postponed = "+Drafts"
+set record = "+Sent Mail"
+set trash = "+Trash"
+
+mailboxes =Important =Starred =Drafts ="Sent Mail" =Spam =Trash
+
+# Ensure TLS is enforced
+set ssl_starttls = yes
+set ssl_force_tls = yes
+
+# Caches
+set header_cache = "~/.cache/neomutt/headers"
+set message_cachedir = "~/.cache/neomutt/bodies"
+set certificate_file = "~/.cache/neomutt/certificates"
+
+# Gmail already records sent mails so we don't want to do it twice.
+unset record
+
+# Keybindings
+# Get vim-like keybindings
+bind pager g top
+bind pager G bottom
+
+# Scroll up and down E-mails with j and k
+bind index j next-entry
+bind index k previous-entry
+# Scroll up and down content of E-mail with j and k
+bind pager j next-line
+bind pager k previous-line
+
+bind attach,index g first-entry
+bind attach,index G last-entry
+bind attach,index,pager \CD next-page
+bind attach,index,pager \CU previous-page
+
+# Sidebar settings
+set sidebar_visible
+set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
+set mail_check_stats
+set sidebar_short_path
+set sidebar_folder_indent
+
+# Sidebar keymap settings
+bind index,pager \CJ sidebar-prev
+bind index,pager \CK sidebar-next
+bind index,pager \CE sidebar-open
+
+# Sort by newest conversations first
+set charset = "utf-8"
+set uncollapse_jump
+set sort_re
+set sort = reverse-threads
+set sort_aux = last-date-received
+
+## Mailcap settings
+set mailcap_path = "$XDG_CONFIG_HOME/neomutt/mailcap"
+# Open attachments with mailcap with <return>
+bind attach <return> view-mailcap
+auto_view text/html
+
+# Miscellaneous
+# Use ~ to pad
+set tilde
+# Check for new E-mails every 30 seconds
+set mail_check = 30
+# Keep the IMAP connection alive by polling intermittently (time in seconds).
+set imap_keepalive = 900
+# Show headers when composing
+set edit_headers
+
+source colors.neomuttrc
+
