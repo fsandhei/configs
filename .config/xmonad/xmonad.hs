@@ -308,7 +308,7 @@ myLogHook xmproc0 xmproc1 = dynamicLogWithPP xmobarPP
 -- per-workspace layout choices.
 
 myStartupHook = do
-         spawnOnce "setup-screen.sh &"
+         spawnOnce "~/.local/bin/setup-screen.sh &"
          spawnOnce "nitrogen --restore &"
          spawnOnce "picom &"
          spawnOnce "emacs --daemon &"
