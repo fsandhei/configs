@@ -1,2 +1,4 @@
 #!/usr/bin/bash
-xrandr --output eDP-1 --auto --output DP-1 --auto --right-of eDP-1
+main_screen="eDP1"
+offscreen="DP1"
+xrandr --output "$main_screen" --auto --output "$offscreen" --auto --right-of "$main_screen"
