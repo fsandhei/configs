@@ -5,5 +5,8 @@
          "command": "pyright",
          "filetypes": "py"
       }
-   }
+   },
+   "rust-analyzer.server.path": "/home/fredrik/.cargo/bin/rust-analyzer",
+   "rust-analyzer.updates.channel": "stable",
+   "rust-client.rustupPath": "/home/fredrik/.cargo/bin/rustup"
 }
