@@ -312,6 +312,7 @@ myStartupHook = do
          spawnOnce "nitrogen --restore &"
          spawnOnce "picom &"
          spawnOnce "emacs --daemon &"
+         spawnOnce "imwheel &"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
