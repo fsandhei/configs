@@ -1,4 +1,5 @@
 " Filetype settings inspired by Jon Gjengset
+" TODO: Rewrite to Lua, so it can be integrated into the ftplugin directory.
 
 augroup filetypedetect
   " Mail
