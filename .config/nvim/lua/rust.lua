@@ -12,6 +12,4 @@ vim.api.nvim_set_option('updatetime', 300)
 -- Fixed column for diagnostics to appear
 -- Goto previous / next diagnostic warning / error
 -- Show inlay_hints more frequently
-vim.cmd([[
-set signcolumn=yes
-]])
+vim.api.signcolumn = true
