@@ -87,7 +87,7 @@ auto_view text/html
 # Use ~ to pad
 set tilde
 # Check for new E-mails every 30 seconds
-set mail_check = 30
+set mail_check = 10
 # Keep the IMAP connection alive by polling intermittently (time in seconds).
 set imap_keepalive = 900
 # Show headers when composing
