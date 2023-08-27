@@ -2,11 +2,7 @@ vim.opt.runtimepath:append { "~/.config/nvim/bundle/Vundle.vim" }
 vim.opt.runtimepath:append { "~/dev/github/nvim-base16" }
 
 -- Colors and background settings
-vim.o.background = dark
-vim.g.base16colorspace = 256
-vim.g.base16_shell_path = "~/dev/github/nvim-base16/colors"
--- vim.cmd([[colorscheme base16-gruvbox-dark-hard]])
-vim.cmd.colorscheme("base16-gruvbox-dark-hard")
+-- vim.cmd.colorscheme "catppuccin-macchiato"
 
 -- Make line numbers be relative to curser.
 vim.opt.relativenumber = true
