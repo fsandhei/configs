@@ -147,17 +147,19 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Restart xmonad
     , ((modm              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
 
-    -- Run xmessage with a summary of the default keybindings (useful for beginners)
-    , ((modm .|. shiftMask, xK_slash ), spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))
     -- Increase audio by 2%
     , ((0                , xF86XK_AudioLowerVolume), spawn ("amixer -q sset Master 2%-"))
+
     -- Decrease audio by 2%
     , ((0                , xF86XK_AudioRaiseVolume), spawn ("amixer -q sset Master 2%+"))
+
     -- Toggle audio 
     , ((0                , xF86XK_AudioMute), spawn ("amixer -q sset Master toggle"))
 
     -- Scratchpads
     , ((modm .|. controlMask, xK_c), namedScratchpadAction myScratchPads "calculator")
+
+    , ((modm .|. shiftMask, xK_f), spawn ("firefox"))
     ]
     ++
 
