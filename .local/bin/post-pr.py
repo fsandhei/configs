@@ -21,11 +21,17 @@ class PullRequest:
 
 def get_args():
     parser = argparse.ArgumentParser(
-            description = "Get brief description on PR that can be copy/pasted, using GitHub REST API.")
+            description = """Get brief description on PR that can be copy/pasted, using GitHub REST API.
+
+            GitHub token is by default fetched from your .netrc configuration, if any. Otherwise, the token needs
+
+            to be specified with --gh-token.
+
+            """)
 
     parser.add_argument("--pr-number", help = "PR number", type = int)
     parser.add_argument("--interactive", action = "store_true")
-    parser.add_argument("gh_token", help = "GitHub token")
+    parser.add_argument("--gh-token", help = "GitHub token")
 
     return parser.parse_args();
 
@@ -48,9 +54,12 @@ def list_prs(owner, repo, token):
     
     headers = {
                 "Accept": "application/vnd.github+json",
-                "Authorization": "Bearer " + token,
                 "X-GitHub-Api-Version": "2022-11-28"
               }
+
+    if token is not None:
+        headers["Authorization"] = "Bearer " + token
+
     result = requests.get(github_api_prs_url, headers = headers)
     json_doc = result.json()
 
@@ -99,24 +108,30 @@ def main():
 
         headers = {
                     "Accept": "application/vnd.github+json",
-                    "Authorization": "Bearer " + args.gh_token,
                     "X-GitHub-Api-Version": "2022-11-28"
                   }
 
-        result = requests.get(github_api_pr_url, headers = headers)
+        if args.gh_token is not None:
+            headers["Authorization"] = "Bearer " + args.gh_token
 
+        result = requests.get(github_api_pr_url, headers = headers)
         json_doc = result.json()
 
-        url = json_doc["html_url"]
-        title = json_doc["title"]
-        adds = json_doc["additions"]
-        dels = json_doc["deletions"]
+        if result.status_code == requests.codes.ok:
 
-        print(f"""Announce PR with message:
+            url = json_doc["html_url"]
+            title = json_doc["title"]
+            adds = json_doc["additions"]
+            dels = json_doc["deletions"]
 
-                {url} {title} [+{adds}/-{dels}]
+            print(f"""Announce PR with message:
 
-              """)
+                    {url} {title} [+{adds}/-{dels}]
+
+                  """)
+        else:
+            msg = json_doc["message"]
+            error(f"Failed to get information about PR {args.pr_number}: {msg}")
 
 if __name__ == "__main__":
     main()
