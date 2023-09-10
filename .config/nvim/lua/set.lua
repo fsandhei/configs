@@ -1,7 +1,11 @@
-vim.opt.runtimepath:append { "~/dev/github/nvim-base16" }
+-- vim.opt.runtimepath:append { "~/dev/github/nvim-base16" }
 
-vim.cmd.colorscheme("base16-gruvbox-dark-pale")
-
+-- Toggle highlight of current line.
+vim.opt.cursorline = true
+-- Set highlight of current line to only highlight the line number.
+vim.opt.cursorlineopt = "number"
+-- Enable True Color schemes
+vim.opt.termguicolors = true
 -- Make line numbers be relative to curser.
 vim.opt.relativenumber = true
 -- Show current line number.

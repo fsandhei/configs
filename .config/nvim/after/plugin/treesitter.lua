@@ -13,7 +13,7 @@ require("nvim-treesitter.configs").setup {
    -- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
 
    highlight = {
-      enable = false,
+      enable = true,
 
       -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
       -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
