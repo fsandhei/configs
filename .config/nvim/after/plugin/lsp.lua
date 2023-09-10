@@ -9,9 +9,12 @@ lsp.on_attach(function(client, bufnr)
    lsp.buffer_autoformat()
 end)
 
-lsp.ensure_installed({
-   "rust_analyzer"
-})
+-- lsp.ensure_installed({
+--    "rust_analyzer"
+-- })
+
+-- Let rust-tools handle setup of rust_analyzer
+lsp.skip_server_setup({ "rust_analyzer" })
 
 -- (Optional) Configure lua language server for neovim
 require('lspconfig').lua_ls.setup({
@@ -40,6 +43,17 @@ vim.api.nvim_create_autocmd({ "CursorHold" }, {
 })
 
 lsp.setup()
+
+
+local rust_tools = require('rust-tools')
+
+rust_tools.setup({
+   server = {
+      on_attach = function(_, bufnr)
+         vim.keymap.set('n', '<leader>ca', rust_tools.hover_actions.hover_actions, { buffer = bufnr })
+      end
+   }
+})
 
 local cmp = require('cmp')
 
