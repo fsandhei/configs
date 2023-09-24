@@ -2,10 +2,9 @@
 -- Color scheme: Doom One
 
 -- Dependencies
--- NotoSansMono Nerd Font Medium
--- Doom One Color Scheme
+-- Hack Nerd Font Mono
 
-Config { font = "NotoSansMono Nerd Font Regular 10"
+Config { font = "Hack Nerd Font Mono 9"
        , additionalFonts = []
        , borderColor = "black"
        , border = TopB
