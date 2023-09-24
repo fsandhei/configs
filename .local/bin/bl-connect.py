@@ -100,6 +100,7 @@ def disconnect(name: str = None):
         mac_address = get_mac_address(name)
         args.append(mac_address)
     subprocess.run(args)
+    return 0
 
 def find_and_connect(device: str, alternate_name: str = None, attempts: int = None) -> int:
     if alternate_name != None:
@@ -128,7 +129,10 @@ def main():
         args = get_args()
 
         if args.disconnect:
-            returncode = disconnect()
+            for name in args.name:
+                returncode = disconnect(name)
+                if returncode != 0:
+                    raise RuntimeError(f"Failed to disconnect device {name}. code = {returncode}")
             return returncode
 
         if args.list:
