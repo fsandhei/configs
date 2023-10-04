@@ -4,6 +4,7 @@
 # Script uses the GitHub REST API in order to fetch information about the PR.
 
 import argparse
+import textwrap
 import requests
 import subprocess
 import sys
@@ -21,13 +22,16 @@ class PullRequest:
 
 def get_args():
     parser = argparse.ArgumentParser(
-            description = """Get brief description on PR that can be copy/pasted, using GitHub REST API.
+            description =
+            textwrap.dedent("""
+            Get brief description on PR that can be copy/pasted, using GitHub REST API.
 
             GitHub token is by default fetched from your .netrc configuration, if any. Otherwise, the token needs
 
             to be specified with --gh-token.
 
-            """)
+            """),
+            formatter_class = argparse.RawTextHelpFormatter)
 
     parser.add_argument("--pr-number", help = "PR number", type = int)
     parser.add_argument("--interactive", action = "store_true")
