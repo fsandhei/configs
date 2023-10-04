@@ -30,3 +30,11 @@ vim.g.mapleader = "\\"
 vim.api.nvim_create_autocmd("TextYankPost", {
    callback = function() vim.highlight.on_yank() end
 })
+
+
+vim.api.nvim_create_autocmd("FileType", {
+   pattern = "tex",
+   callback = function(args)
+      vim.keymap.set('n', '<leader>lb', ':!pdflatex -interaction=nonstopmode %<CR><CR>', { buffer = args.buf })
+   end
+})
