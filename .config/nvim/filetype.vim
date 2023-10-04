@@ -11,7 +11,7 @@ augroup filetypedetect
   " nftables
   autocmd BufRead,BufNewFile *.nft setfiletype nftables
   " Shorter columns in text
-  autocmd Filetype tex setlocal tw=80 colorcolumn=81
+  autocmd Filetype tex setlocal tw=120 colorcolumn=121
   autocmd Filetype text setlocal tw=72
 
   " No autocomplete in text
