@@ -127,7 +127,6 @@ def main():
             print(f"""Announce PR with message:
 
                     {url} {title} [+{adds}/-{dels}]
-
                   """)
         else:
             msg = json_doc["message"]
