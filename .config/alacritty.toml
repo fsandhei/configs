@@ -1,0 +1,67 @@
+import = ["/home/fredrik/.config/alacritty/catppuccin/catppuccin-frappe.toml"]
+
+[colors.bright]
+black = "#665c54"
+blue = "#83a598"
+cyan = "#8ec07c"
+green = "#b8bb26"
+magenta = "#d3869b"
+red = "#fb4934"
+white = "#fbf1c7"
+yellow = "#fabd2f"
+
+[colors.cursor]
+cursor = "#d5c4a1"
+text = "#1d2021"
+
+[colors.normal]
+black = "#1d2021"
+blue = "#83a598"
+cyan = "#8ec07c"
+green = "#b8bb26"
+magenta = "#d3869b"
+red = "#fb4934"
+white = "#d5c4a1"
+yellow = "#fabd2f"
+
+[env]
+TERM = "xterm-256color"
+
+[font]
+size = 7
+
+[font.bold]
+family = "Hack Nerd Font Mono"
+
+[font.bold_italic]
+family = "Hack Nerd Font Mono"
+style = "Bold Italic"
+
+[font.italic]
+family = "Hack Nerd Font Mono"
+style = "Italic"
+
+[font.normal]
+family = "Hack Nerd Font Mono"
+style = "Regular"
+
+[[keyboard.bindings]]
+action = "Paste"
+key = "V"
+mods = "Alt"
+
+[[keyboard.bindings]]
+action = "Copy"
+key = "Copy"
+mods = "Alt"
+
+[[keyboard.bindings]]
+action = "SpawnNewInstance"
+key = "Return"
+mods = "Control|Shift"
+
+[scrolling]
+history = 10000
+
+[window]
+decorations = "none"
