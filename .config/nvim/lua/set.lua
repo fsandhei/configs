@@ -35,6 +35,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 vim.api.nvim_create_autocmd("FileType", {
    pattern = "tex",
    callback = function(args)
-      vim.keymap.set('n', '<leader>lb', ':!pdflatex -interaction=nonstopmode %<CR><CR>', { buffer = args.buf })
+      vim.keymap.set('n', '<leader>lb', ':!pdflatex -interaction=nonstopmode %<CR>', { buffer = args.buf })
    end
 })

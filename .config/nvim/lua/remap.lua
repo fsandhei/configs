@@ -25,5 +25,5 @@ vim.keymap.set('n', "?", "?\\v", { noremap = true })
 vim.keymap.set('n', "<C-h>", "<cmd>nohlsearch<CR>", { noremap = true })
 vim.keymap.set('v', "<C-h>", "<cmd>nohlsearch<CR>", { noremap = true })
 
--- Convience remap for pasting over highlighted text with content from buffer.
+-- Convenience remap for pasting over highlighted text with content from buffer.
 vim.keymap.set('x', "<leader>p", "\"_dP")
