@@ -12,7 +12,7 @@ augroup filetypedetect
   autocmd BufRead,BufNewFile *.nft setfiletype nftables
   " Shorter columns in text
   autocmd Filetype tex setlocal tw=120 colorcolumn=121
-  autocmd Filetype text setlocal tw=72
+  autocmd Filetype text setlocal tw=72 spell
 
   " No autocomplete in text
   autocmd BufRead,BufNewFile /tmp/mutt* let b:coc_enabled = 0

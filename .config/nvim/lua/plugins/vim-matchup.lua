@@ -1,4 +1,4 @@
--- Gives nice markings of nests. UX improvement.
+-- Gives nice markings of brace nests. UX improvement.
 return {
    "andymass/vim-matchup",
 }

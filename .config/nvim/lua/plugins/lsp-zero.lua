@@ -3,6 +3,8 @@ return {
    branch = 'v2.x',
    dependencies = {
       -- LSP Support
+      -- nvim-lspconfig: Providing basic, default LSP client configurations.
+      -- Is used for installing LSPs for various languages.
       { 'neovim/nvim-lspconfig' }, -- Required
       {                            -- Optional
          'williamboman/mason.nvim',
