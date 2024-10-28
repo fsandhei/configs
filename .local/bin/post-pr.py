@@ -199,8 +199,7 @@ def get_user():
         user = json_doc["login"]
         return user
     else:
-        error = response_json["errors"][0]
-        msg = error["message"]
+        msg = json_doc["message"]
         raise RuntimeError(f"Failed to get user information: {msg}")
 
 def main():

@@ -13,7 +13,29 @@ lsp.on_attach(function(client, bufnr)
    end
 end)
 
-lsp.skip_server_setup({ "rust_analyzer" })
+local lspconfig = require('lspconfig')
+
+lspconfig.rust_analyzer.setup({
+   settings = {
+      ["rust-analyzer"] = {
+         imports = {
+            granularity = {
+               group = "module",
+            },
+            prefix = "self",
+         },
+         cargo = {
+            allFeatures = true,
+            buildScripts = {
+               enable = true,
+            },
+         },
+         procMacro = {
+            enable = true
+         },
+      }
+   }
+})
 
 -- (Optional) Configure lua language server for neovim
 require('lspconfig').lua_ls.setup({
