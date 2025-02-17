@@ -9,17 +9,17 @@
 #Untracked files: 
 #Renamed files: ➜
 
-statuses=`git status --short 2> /dev/null`
+statuses=`git status --porcelain 2> /dev/null`
 [ "$?" -gt 0 ] && exit 0
 #If the status has nothing to show, mark the repository clean and exit. 
 [ -z "$statuses" ] &&  printf "" && echo && exit 0
 
-modified=`echo "${statuses}" | grep -cE "M\s"`      # Count how many occurences of modified using -c
-added=`echo "${statuses}" | grep -cE "A\s"`         # Count how many occurences of added using -c
-unstaged=`echo "${statuses}" | grep -cE "^U\s"`     # Count how many occurences of unstaged using -c
-untracked=`echo "${statuses}" | grep -cE "\?\?\s*"` # Count how many occurences of untracked using -c
-renamed=`echo ${statuses} | grep -cE "R\s"`         # Count how many occurences of renamed using -c
-deleted=`echo ${statuses} | grep -cE "D\s"`         # Count how many occurences of deleted using -c
+modified=`echo "${statuses}" | grep -cE "M\s"`           # Count how many occurences of modified using -c
+added=`echo "${statuses}" | grep -cE "A\s"`              # Count how many occurences of added using -c
+unstaged=`echo "${statuses}" | grep -cE "^U\s"`          # Count how many occurences of unstaged using -c
+untracked=`echo "${statuses}" | grep -cE "^(UU|\?\?)\s"` # Count how many occurences of untracked using -c
+renamed=`echo ${statuses} | grep -cE "R\s"`              # Count how many occurences of renamed using -c
+deleted=`echo ${statuses} | grep -cE "D\s"`              # Count how many occurences of deleted using -c
 
 [ $modified -gt 0 ] && printf "●%s" "$modified"
 [ $added -gt 0 ] && printf "%s" "$added"

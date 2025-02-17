@@ -52,7 +52,7 @@ mods = "Alt"
 
 [[keyboard.bindings]]
 action = "Copy"
-key = "Copy"
+key = "C"
 mods = "Alt"
 
 [[keyboard.bindings]]

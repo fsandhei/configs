@@ -296,7 +296,7 @@ myLogHook xmproc0 xmproc1 = dynamicLogWithPP xmobarPP
   , ppHidden = xmobarColor "#82aaff" "" . wrap "*" ""    -- Hidden workspaces in xmobar
   , ppHiddenNoWindows = xmobarColor "#c792ea" ""         -- Hidden workspaces but no windows in xmobar
   , ppSep = "<fc=#666666> | </fc>"                       -- Separators in xmobar
-  , ppTitle = xmobarColor "#b3afc2" "" . shorten 30      -- Title of active window in xmobar
+  , ppTitle = xmobarColor "#0acdff" "" . shorten 30      -- Title of active window in xmobar
   , ppOrder = \(ws:_:t:_) -> [ws]++[t]                   -- Formatting of input to xmobar
   , ppOutput = \x -> hPutStrLn xmproc0 x                 -- Instance of xmobar on monitor 1
                >> hPutStrLn xmproc1 x                    -- Instance of xmobar on monitor 2
