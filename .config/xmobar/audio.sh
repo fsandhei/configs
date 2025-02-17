@@ -3,6 +3,8 @@
 # either a 'audio off' or 'audio on' symbol depending on the state
 # of the audio settings.
 #
+# Need to be used in conjunction with xmobar, with some alternative font.
+#
 # In order for this to work 'amixer' has to be installed.
 # Install it with pacman:
 # 	sudo pacman -S alsa-utils
@@ -18,7 +20,7 @@ sound_on_emote="󰕾"
 sound_off_emote="󰖁"
 
 if [[ "$audio_status" = "on" ]]; then
-    printf "%s (%s)" "$sound_on_emote" "$audio_percentage"
+    printf "<fn=1>%s</fn> (%s)" "$sound_on_emote" "$audio_percentage"
 else
-    printf "%s" "$sound_off_emote"
+    printf "<fn=1>%s</fn>" "$sound_off_emote"
 fi

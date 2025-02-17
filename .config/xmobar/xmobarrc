@@ -5,7 +5,7 @@
 -- Hack Nerd Font Mono
 
 Config { font = "Hack Nerd Font Mono 9"
-       , additionalFonts = []
+       , additionalFonts = ["SpaceMono Nerd Font 8"]
        , borderColor = "black"
        , border = TopB
        , bgColor = "#282c34"
@@ -27,24 +27,24 @@ Config { font = "Hack Nerd Font Mono 9"
        , iconRoot = "."
        , allDesktops = True
        , overrideRedirect = True
-       , commands = [Run Cpu ["-L","3","-H","50",
+       , commands = [Run Cpu ["--template", "<fn=1></fn> <total>%", "-L","3","-H","50",
                      "--normal","green","--high","red"] 10
                              -- cpu core temperature monitor
-                    , Run CoreTemp [ "--template" , "Temp: <core0>°C"
+                    , Run CoreTemp [ "--template" , "<box type=Bottom width=2 color=#d79921><fc=#d79921><fn=1></fn></fc> <core0>°C</box>"
                                    , "--Low"      , "70"        -- units: °C
                                    , "--High"     , "80"        -- units: °C
                                    , "--low"      , "lightgreen"
                                    , "--normal"   , "lightorange"
                                    , "--high"     , "lightred"
                                    ] 50
-                    , Run Com "/home/fredrik/.local/bin/wireless.sh" [] "wifi" 50
-		    , Run Com "/home/fredrik/.local/bin/audio.sh" [] "audio" 10
-                    , Run Memory ["-t","Mem: <usedratio>%"] 10
+                    , Run Com "./.config/xmobar/wireless.sh" [] "wifi" 50
+		    , Run Com "./.config/xmobar/audio.sh" [] "audio" 10
+                    , Run Memory ["-t","<fn=1></fn><hspace=3/> <usedratio>%"] 10
                     , Run Swap [] 10
                     , Run Com "echo" ["\xf17c"] "penguin" 3600
                     , Run Com "uname" ["-s","-r"] "" 36000
                     , Run Date "%a %b %d %Y %H:%M:%S" "date" 10
-                    , Run Battery [ "--template" , "Batt: <acstatus>"
+                    , Run Battery [ "--template" , "<box type=Bottom width=2 color=#00ffff>󰁹 <acstatus></box>"
                              , "--Low"      , "10"        -- units: %
                              , "--High"     , "80"        -- units: %
                              , "--low"      , "darkred"
@@ -55,7 +55,7 @@ Config { font = "Hack Nerd Font Mono 9"
                                        -- discharging status
                                        , "-o"	, "<left>% (<timeleft>)"
                                        -- AC "on" status
-                                       , "-O"	, "<fc=#dAA520>Charging</fc>"
+                                       , "-O"	, "<fc=#dAA520>Charging (<left>%)</fc>"
                                        -- charged status
                                        , "-i"	, "<fc=lightgreen>Charged</fc>"
                        ] 50
