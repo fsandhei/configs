@@ -8,8 +8,8 @@ Config { font = "Hack Nerd Font Mono 9"
        , additionalFonts = ["SpaceMono Nerd Font 8"]
        , borderColor = "black"
        , border = TopB
-       , bgColor = "#282c34"
-       , fgColor = "#bbc2cf"
+       , bgColor = "#1a1b26"
+       , fgColor = "#a9b1d6"
        , alpha = 255
        -- Position TopSize and BottomSize take 3 arguments:
        --   an alignment parameter (L/R/C) for Left, Right or Center.
@@ -39,12 +39,12 @@ Config { font = "Hack Nerd Font Mono 9"
                                    ] 50
                     , Run Com "./.config/xmobar/wireless.sh" [] "wifi" 50
 		    , Run Com "./.config/xmobar/audio.sh" [] "audio" 10
-                    , Run Memory ["-t","<fn=1></fn><hspace=3/> <usedratio>%"] 10
+                    , Run Memory ["-t","<fn=1>\xefc5</fn><hspace=3/> <usedratio>%"] 10
                     , Run Swap [] 10
                     , Run Com "echo" ["\xf17c"] "penguin" 3600
                     , Run Com "uname" ["-s","-r"] "" 36000
                     , Run Date "%a %b %d %Y %H:%M:%S" "date" 10
-                    , Run Battery [ "--template" , "<box type=Bottom width=2 color=#00ffff>󰁹 <acstatus></box>"
+                    , Run Battery [ "--template" , "<box type=Bottom width=2 color=#f7768e>\xf0079 <acstatus></box>"
                              , "--Low"      , "10"        -- units: %
                              , "--High"     , "80"        -- units: %
                              , "--low"      , "darkred"
