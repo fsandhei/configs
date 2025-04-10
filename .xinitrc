@@ -28,6 +28,9 @@ xrandr
 # If done after, these settings might not be respected.
 "$HOME"/.local/bin/setup-screen.sh
 
+# By default, the X shaped cursor appears in those window managers
+# that don't set a default cursor.
+# We therefore set the cursor, just in case.
 xsetroot -cursor_name left_ptr
 
 if [ -f "$userresources" ]; then
@@ -47,11 +50,5 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
  done
  unset f
 fi
-
-# Start X11 compositor
-picom &
-# For better handling of mouse handling in X, for example having
-# consistent and smooth scrolling.
-imwheel &
 
 exec xmonad

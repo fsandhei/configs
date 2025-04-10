@@ -38,6 +38,7 @@ import qualified XMonad.Layout.ToggleLayouts as T (toggleLayouts, ToggleLayout(T
 -- certain contrib modules.
 --
 -- myTerminal      = "tabbed -r 2 st -w ''"
+myTerminal :: String
 myTerminal = "alacritty -e tmux new-session"
 
 -- Whether focus follows the mouse pointer.
@@ -71,7 +72,7 @@ myWorkspaces = ["dev", "www", "etc", "doc", "sys", "vbox", "mail"]
 
 -- Border colors for unfocused and focused windows, respectively.
 myNormalBorderColor  = colorBack
-myFocusedBorderColor = color15
+myFocusedBorderColor = color14
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -148,10 +149,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
 
     -- Increase audio by 2%
-    , ((0                , xF86XK_AudioLowerVolume), spawn ("amixer -q sset Master 2%-"))
+    , ((0                , xF86XK_AudioLowerVolume), spawn ("amixer -q sset Master 5%-"))
 
     -- Decrease audio by 2%
-    , ((0                , xF86XK_AudioRaiseVolume), spawn ("amixer -q sset Master 2%+"))
+    , ((0                , xF86XK_AudioRaiseVolume), spawn ("amixer -q sset Master 5%+"))
 
     -- Toggle audio 
     , ((0                , xF86XK_AudioMute), spawn ("amixer -q sset Master toggle"))
@@ -160,6 +161,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. controlMask, xK_c), namedScratchpadAction myScratchPads "calculator")
 
     , ((modm .|. shiftMask, xK_f), spawn ("firefox"))
+    , ((modm .|. shiftMask, xK_g), spawn ("chromium"))
+    , ((modm .|. shiftMask, xK_u), spawn ("pavucontrol")) -- spawns pavucontrol, for audio control (pulseaudio).
     ]
     ++
 
@@ -221,18 +224,18 @@ mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
 -- mySpacing sets the gap size around the windows in pixels
 tall = renamed [Replace "tall"]
       $ limitWindows 5
-      $ smartBorders
+      $ noBorders
       $ mySpacing 8
-      $ subLayout [] (smartBorders Simplest)
+      $ subLayout [] (noBorders Simplest)
       $ ResizableTall 1 (3/100) (1/2) []
 
 -- Full screen layout mode. Replaces the default one to have more styling.
 full = renamed [Replace "full"]
-      $ smartBorders
-      $ subLayout [] (smartBorders Simplest)
+      $ noBorders
+      $ subLayout [] (noBorders Simplest)
       $ Full
 
-myLayout = avoidStruts myDefaultLayout
+myLayout = avoidStruts $ myDefaultLayout
    where
       myDefaultLayout = withBorder myBorderWidth tall ||| full
 
@@ -265,9 +268,7 @@ myScratchPads = [NS "calculator" spawnCalc findCalc manageCalc]
 -- 'className' and 'resource' are used below.
 --
 myManageHook = composeAll
-    [ className =? "MPlayer"        --> doFloat
-    , className =? "Gimp"           --> doFloat
-    , resource  =? "desktop_window" --> doIgnore
+    [ resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
     , className =? "firefox"        --> doShift (myWorkspaces !! 1)
     ] <+> namedScratchpadManageHook myScratchPads
@@ -309,7 +310,15 @@ myLogHook xmproc0 xmproc1 = dynamicLogWithPP xmobarPP
 -- with mod-q.  Used by, e.g., XMonad.Layout.PerWorkspace to initialize
 -- per-workspace layout choices.
 
-myStartupHook = return ()
+myStartupHook :: X ()
+myStartupHook = do
+   spawnOnce "nitrogen --restore &"
+   -- For better handling of mouse handling in X, for example having
+   -- consistent and smooth scrolling.
+   spawnOnce "imwheel &"
+   spawnOnce "picom &"
+   spawnOnce "dunst &"
+   spawnOnce "conky --daemonize --pause=5"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.

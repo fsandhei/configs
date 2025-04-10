@@ -22,5 +22,5 @@ sound_off_emote="󰖁"
 if [[ "$audio_status" = "on" ]]; then
     printf "<fn=1>%s</fn> (%s)" "$sound_on_emote" "$audio_percentage"
 else
-    printf "<fn=1>%s</fn>" "$sound_off_emote"
+    printf "<fn=1>%s</fn> " "$sound_off_emote"
 fi
