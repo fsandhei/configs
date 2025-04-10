@@ -1,5 +1,3 @@
--- vim.opt.runtimepath:append { "~/dev/github/nvim-base16" }
-
 -- Toggle highlight of current line.
 vim.opt.cursorline = true
 -- Set highlight of current line to only highlight the line number.
@@ -35,6 +33,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 vim.api.nvim_create_autocmd("FileType", {
    pattern = "tex",
    callback = function(args)
-      vim.keymap.set('n', '<leader>lb', ':!pdflatex -interaction=nonstopmode %<CR>', { buffer = args.buf })
+      vim.keymap.set('n', '<leader>lb', ':!latexmk -pdf %<CR>', { buffer = args.buf })
    end
 })
