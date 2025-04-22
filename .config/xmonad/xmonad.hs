@@ -72,7 +72,7 @@ myWorkspaces = ["dev", "www", "etc", "doc", "sys", "vbox", "mail"]
 
 -- Border colors for unfocused and focused windows, respectively.
 myNormalBorderColor  = colorBack
-myFocusedBorderColor = color14
+myFocusedBorderColor = color11
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -224,18 +224,22 @@ mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
 -- mySpacing sets the gap size around the windows in pixels
 tall = renamed [Replace "tall"]
       $ limitWindows 5
-      $ noBorders
+      $ smartBorders
       $ mySpacing 8
       $ subLayout [] (noBorders Simplest)
-      $ ResizableTall 1 (3/100) (1/2) []
+      $ ResizableTall nmaster delta ratio []
+   where
+      nmaster = 1
+      delta = 3/100
+      ratio = 1/2
 
 -- Full screen layout mode. Replaces the default one to have more styling.
 full = renamed [Replace "full"]
-      $ noBorders
+      $ smartBorders
       $ subLayout [] (noBorders Simplest)
       $ Full
 
-myLayout = avoidStruts $ myDefaultLayout
+myLayout = avoidStruts $ lessBorders (Combine Difference Screen OnlyFloat) $ myDefaultLayout
    where
       myDefaultLayout = withBorder myBorderWidth tall ||| full
 
