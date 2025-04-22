@@ -14,7 +14,6 @@ conky
 cppcheck
 ctags
 dmenu
-docker-buildx
 dunst
 efibootmgr
 eza
