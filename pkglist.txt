@@ -18,7 +18,6 @@ docker
 docker-buildx
 dunst
 efibootmgr
-emacs
 eza
 fd
 feh
