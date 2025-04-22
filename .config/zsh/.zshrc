@@ -10,6 +10,7 @@ setopt rcexpandparam      # Array expansion with parameters
 setopt histignorealldups  # If a new command is a duplicate, remove the older one
 setopt autocd             # if only directory path is entered, cd there.
 
+export LC_ALL=en_US.UTF-8
 
 [ -f "$ZDOTDIR/aliasrc" ]  && source "$ZDOTDIR/aliasrc"
 [ ! -d "$HOME/.cache/zsh" ] && mkdir "$HOME/.cache/zsh"
@@ -91,3 +92,4 @@ bindkey '^[[6~' history-beginning-search-forward  #Page down key
 
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor line)
 source $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
+. "$HOME/.cargo/env"
