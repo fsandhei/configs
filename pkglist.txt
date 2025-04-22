@@ -79,7 +79,6 @@ ttf-space-mono-nerd
 ueberzugpp
 unzip
 wireplumber
-wireshark-qt
 xclip
 xf86-video-vesa
 xmobar
