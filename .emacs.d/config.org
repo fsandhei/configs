@@ -1,0 +1,41 @@
+#+begin_src emacs-lisp
+;; Bootstrap Elpaca
+(defvar elpaca-installer-version 0.5)
+(defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
+(defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
+(defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
+(defvar elpaca-order
+  '(elpaca :repo "https://github.com/progfolio/elpaca.git"
+           :ref nil
+           :files (:defaults "elpaca-test.el" (:exclude "extensions"))
+           :build (:not elpaca--activate-package)))
+(let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
+       (build (expand-file-name "elpaca/" elpaca-builds-directory))
+       (elpaca-file (expand-file-name "elpaca.el" build)))
+  (unless (file-exists-p elpaca-file)
+    (make-directory elpaca-builds-directory t)
+    (make-directory elpaca-repos-directory t)
+    (let ((default-directory elpaca-repos-directory))
+      (shell-command (format "git clone %s %s" (plist-get (cdr elpaca-order) :repo) repo)))
+    (let ((default-directory repo))
+      (shell-command "git checkout master")
+      (shell-command "./build.bash")))
+  (add-to-list 'load-path build)
+  (require 'elpaca))
+(elpaca-generate-autoloads)
+
+;; Process queues after init
+(add-hook 'after-init-hook #'elpaca-process-queues)
+
+;; Enable elpaca-use-package-mode early
+(elpaca elpaca-use-package
+  (elpaca-use-package-mode))  ;; <- This needs to happen before any use-package calls
+
+;; Now you can just do this — no elpaca wrap needed:
+(use-package evil
+  :init
+  (setq evil-want-integration t)
+  :config
+  (evil-mode 1))
+
+#+end_src
