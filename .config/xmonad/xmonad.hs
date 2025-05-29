@@ -1,7 +1,7 @@
 -- My XMonad config file
 --
 -- Dependencies
---    pacman -S alsa-utils dmenu xmobar alacritty tmux
+--    pacman -S alsa-utils dmenu xmobar alacritty tmux conky dunst
 --    yay -S betterlockscreen
 
 import XMonad
