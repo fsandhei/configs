@@ -20,29 +20,6 @@ fpath=(/home/fredrik/.config/zsh/plugins/zsh-completions/src
        $fpath
 )
 
-SSH_ENV="$HOME/.ssh/environment"
-
-# Starts ssh-agent by writing the output of ssh-agent into a file determined by $SSH_ENV
-# and finally sources the contents of $SSH_ENV to the environment.
-ssh_agent_start() {
-   ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
-   chmod 600 "${SSH_ENV}"
-   source "${SSH_ENV}" > /dev/null
-
-   ssh-add -q $HOME/.ssh/id_ed25519
-   ssh-add -q $HOME/.ssh/id_ed25519_nordic
-}
-
-#if [ $(ps ax | grep "[s]sh-agent" | wc -l) -eq 0 ]; then
-if [ -f "${SSH_ENV}" ]; then
-   source "${SSH_ENV}" > /dev/null
-   ps -ef | grep $SSH_AGENT_PID | grep ssh-agent$ > /dev/null || {
-      ssh_agent_start
-   }
-else
-   ssh_agent_start
-fi
-
 ps_width=$(($COLUMNS / 4))
 
 autoload -Uz git_ps1
