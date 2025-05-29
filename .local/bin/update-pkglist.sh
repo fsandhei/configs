@@ -38,7 +38,6 @@ done
 
 declare -r TMP_PKGLIST="$HOME/.pkglist.txt.tmp"
 declare -r PKGLIST="$HOME/pkglist.txt"
-declare -r ISO_8601_TIME=$(date +"%Y-%m-%dT%H:%M:%S")
 
 echo "Checking if update is needed..."
 pacman -Qqe > "$TMP_PKGLIST"
@@ -53,12 +52,15 @@ if [ "$sha256sum_tmp_pkglist" != "$sha256sum_pkglist" ]; then
     echo "Updating package list..."
     mv --force "$TMP_PKGLIST" "$PKGLIST"
 
-    config diff
+    declare -r ISO_8601_TIME=$(date +"%Y-%m-%dT%H:%M:%S")
+
+    config diff "$PKGLIST"
     config add "$PKGLIST"
     config commit -m "Update pkglist ($ISO_8601_TIME)"
 
     echo "Package list updated!"
 else
+    rm -f "$TMP_PKGLIST"
     echo "No update needed."
 fi
 
