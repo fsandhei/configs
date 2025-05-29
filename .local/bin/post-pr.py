@@ -30,14 +30,6 @@ class PullRequest:
         self.url = json["html_url"]
         self.poster = json["user"]["login"]
 
-    def parse_response_from_json_bitbucket(self, json, base_url, owner, repo):
-        self.number = json["id"]
-        self.title = json["title"]
-
-        pr_url = base_url + "/projects/{}/repos/{}/pull-requests/{}/overview".format(owner, repo, self.number)
-
-        self.url = pr_url
-
     def __repr__(self):
         return f"{self.title} (#{self.number})"
 
@@ -122,36 +114,6 @@ def try_announce_github(owner, repo, pr_number, gh_token = None):
         err_msg = f"Failed to get information about PR #{pr_number}: {msg}"
         raise RuntimeError(err_msg)
 
-def try_announce_nordic(owner, repo, pr_number):
-    base_url = "projecttools.nordicsemi.no/bitbucket"
-    url = "http://{}/rest/api/latest/projects/{}/repos/{}/pull-requests/{}".format(base_url, owner, repo, pr_number)
-    headers = {
-      "Accept": "application/json"
-    }
-
-    response = requests.request(
-       "GET",
-       url,
-       headers = headers
-    )
-
-    response_json = json.loads(response.text)
-
-    if response.status_code == requests.codes.ok:
-
-        pr = PullRequest()
-        pr.parse_response_from_json_bitbucket(response_json, base_url, owner, repo)
-
-        print(f"""Announce PR with message:
-
-                {pr.url}: {pr.title}
-              """)
-    else:
-        error = response_json["errors"][0]
-        msg = error["message"]
-        err_msg = f"Failed to get information about PR #{pr_number}: {msg}"
-        raise RuntimeError(err_msg)
-
 class Repository:
     def __init__(self):
         self.owner = None
@@ -165,12 +127,6 @@ class Repository:
         elif "git@github.com:" in remote:
             domain_stripped = remote.replace("git@github.com:", "")
             domain = "github"
-        elif "https://projecttools.nordicsemi.no" in remote:
-            domain_stripped = remote.replace("https://projecttools.nordicsemi.no/", "")
-            domain = "nordic"
-        elif "git@projecttools.nordicsemi.no" in remote:
-            domain_stripped = remote.replace("git@projecttools.nordicsemi.no:", "")
-            domain = "nordic"
         else:
             error("Git remote is not from any known domain.")
 
@@ -179,11 +135,6 @@ class Repository:
                 domain_stripped_split = domain_stripped.split("/")
                 self.owner = domain_stripped_split[0]
                 self.project = domain_stripped_split[1].replace(".git", "")
-            case "nordic":
-                stripped = domain_stripped.removeprefix("bitbucket/scm/")
-                stripped_split = stripped.split("/")
-                self.owner = stripped_split[0]
-                self.project = stripped_split[1].removesuffix(".git")
             case _:
                 raise RuntimeError("Could not figure out domain!")
         self.domain = domain
@@ -232,7 +183,7 @@ def main():
             if repo.domain == "github":
                 try_announce_github(owner, project, args.pr_number)
             else:
-                try_announce_nordic(owner, project, args.pr_number)
+                raise RuntimeError(f"unhandled repository domain {repo.domain}")
         return 0
     except Exception as e:
         print(e)
