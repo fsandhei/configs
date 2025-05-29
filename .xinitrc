@@ -1,6 +1,10 @@
 # NOTE: Make sure that this file is an executable, so
 # it can be executed from the parent processes / scripts that require this file.
-# This was neccessary for getting lightdm to properly invoke compositor and xmonad.
+# This was necessary for getting lightdm to properly invoke compositor and xmonad.
+#
+# Note that there exists an symlink .xsession that points to this file.
+# This is done for the purpose of the lightdm display manager. lightdm executes
+# .xsession at a successful login.
 
 
 #!/bin/sh
