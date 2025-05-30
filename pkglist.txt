@@ -71,6 +71,7 @@ texlive-fontsextra
 texlive-fontsrecommended
 texlive-latex
 texlive-latexrecommended
+thunar
 tmux
 ttf-hack-nerd
 ttf-nerd-fonts-symbols
