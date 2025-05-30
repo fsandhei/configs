@@ -9,6 +9,7 @@ import XMonad.Util.SpawnOnce
 import XMonad.Util.Run
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageHelpers
 import Data.Monoid
 import System.Exit
 
@@ -20,8 +21,6 @@ import XMonad.Layout.Renamed
 import XMonad.Layout.Simplest
 import XMonad.Layout.Spacing
 import XMonad.Layout.SubLayouts
-
-import XMonad.Util.NamedScratchpad
 
 -- Library that contains mapping of XF86 keyboard types.
 -- Using this for having mapping of sound keys for now,
@@ -157,9 +156,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Toggle audio 
     , ((0                , xF86XK_AudioMute), spawn ("amixer -q sset Master toggle"))
 
-    -- Scratchpads
-    , ((modm .|. controlMask, xK_c), namedScratchpadAction myScratchPads "calculator")
 
+    , ((modm .|. controlMask, xK_f), spawn ("thunar"))
     , ((modm .|. shiftMask, xK_f), spawn ("firefox"))
     , ((modm .|. shiftMask, xK_g), spawn ("chromium"))
     , ((modm .|. shiftMask, xK_u), spawn ("pavucontrol")) -- spawns pavucontrol, for audio control (pulseaudio).
@@ -245,18 +243,6 @@ myLayout = avoidStruts $ lessBorders (Combine Difference Screen OnlyFloat) $ myD
 
 ------------------------------------------------------------------------
 
-myScratchPads :: [NamedScratchpad]
-myScratchPads = [NS "calculator" spawnCalc findCalc manageCalc]
-   where
-      spawnCalc = "kcalc"
-      findCalc = className =? spawnCalc
-      manageCalc = customFloating $ W.RationalRect l t w h
-         where
-            l = 0.70 - w
-            t = 0.75 - h
-            w = 0.4
-            h = 0.5
-
 -- Window rules:
 
 -- Execute arbitrary actions and WindowSet manipulations when managing
@@ -275,7 +261,9 @@ myManageHook = composeAll
     [ resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
     , className =? "firefox"        --> doShift (myWorkspaces !! 1)
-    ] <+> namedScratchpadManageHook myScratchPads
+    -- values for the size of the thunar file manager box are just empirically chosen.
+    , className =? "Thunar"         --> (doRectFloat $ W.RationalRect (1/6) (1/6) (3/5) (3/5))
+    ]
 
 ------------------------------------------------------------------------
 -- Event handling
