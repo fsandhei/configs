@@ -262,8 +262,16 @@ myManageHook = composeAll
     , resource  =? "kdesktop"       --> doIgnore
     , className =? "firefox"        --> doShift (myWorkspaces !! 1)
     -- values for the size of the thunar file manager box are just empirically chosen.
-    , className =? "Thunar"         --> (doRectFloat $ W.RationalRect (1/6) (1/6) (3/5) (3/5))
+    , className =? "Thunar"         --> thunarFloatingRect
     ]
+   where
+      thunarFloatingRect = doRectFloat $ W.RationalRect x y l w
+         where
+            x = 1/4
+            y = 1/4
+            l = 3/5
+            w = 3/5
+
 
 ------------------------------------------------------------------------
 -- Event handling
