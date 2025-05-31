@@ -345,11 +345,11 @@ myTreeConf = do
 exitSelectAction = do
    conf <- myTreeConf
    treeselectAction conf
-      [ Node (TSNode "\xf0a48 Log out"    "Logs out from this session"      (io (exitWith ExitSuccess))) [] -- \xf0a48 is an exit symbol
-      , Node (TSNode "\xf011 Shutdown" "Poweroff the system" (spawn "systemctl poweroff")) [] -- \xf011 is power symbol
-      , Node (TSNode "\xf0709 Restart" "Restart the system" (spawn "systemctl restart")) [] -- \xf0709 is a restart symbol
-      , Node (TSNode "\xf023 Lock screen" "Locks the screen" myLockScreen) [] -- \xf023 is a lock symbol
-      , Node (TSNode "\xf073a Cancel" "Exit this menu." (return ())) [] -- \xf073a is a cancel symbol
+      [ Node (TSNode "\xf0a48 Log out"    "Logs out from this session."      (io (exitWith ExitSuccess))) [] -- \xf0a48 is an exit symbol
+      , Node (TSNode "\xf011 Shutdown" "Powers off the system." (spawn "systemctl poweroff")) [] -- \xf011 is power symbol
+      , Node (TSNode "\xf0709 Restart" "Restarts the system." (spawn "systemctl restart")) [] -- \xf0709 is a restart symbol
+      , Node (TSNode "\xf023 Lock screen" "Locks the screen." myLockScreen) [] -- \xf023 is a lock symbol
+      , Node (TSNode "\xf073a Cancel" "Exits this menu." (return ())) [] -- \xf073a is a cancel symbol
       ]
 ------------------------------------------------------------------------
 -- Startup hook
