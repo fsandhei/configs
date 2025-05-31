@@ -4,6 +4,10 @@
 --    pacman -S alsa-utils dmenu xmobar alacritty tmux conky dunst
 --    yay -S betterlockscreen
 
+import Data.Tree
+
+import XMonad.Actions.TreeSelect
+
 import XMonad
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Run
@@ -82,8 +86,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- launch dmenu
     , ((modm,               xK_p     ), spawn "dmenu_run")
 
+    , ((modm,               xK_g     ), exitSelectAction)
+
    -- Lock screen   
-    , ((modm .|. shiftMask, xK_l     ), spawn "betterlockscreen --lock blur")
+    , ((modm .|. shiftMask, xK_l     ), myLockScreen)
 
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
@@ -143,7 +149,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
 
     -- Restart xmonad
-    , ((modm              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
+    , ((modm              , xK_q     ), spawn "xmonad --recompile && xmonad --restart")
 
     -- Increase audio by 2%
     , ((0                , xF86XK_AudioLowerVolume), spawn ("amixer -q sset Master 5%-"))
@@ -299,6 +305,52 @@ myLogHook xmproc0 xmproc1 = dynamicLogWithPP xmobarPP
                >> hPutStrLn xmproc1 x                    -- Instance of xmobar on monitor 2
   }
 
+------------------------------------------------------------------------
+-- Exit Selection Actions
+
+-- Get current screen dimensions
+getCurrentScreenDimensions :: X (Int, Int)
+getCurrentScreenDimensions = withWindowSet $ \ws -> do
+    let currentScreen = W.current ws
+        screenDetail = W.screenDetail currentScreen
+        Rectangle _ _ w h = screenRect screenDetail
+    return (fromIntegral w, fromIntegral h)
+
+-- Common abstraction around lock screen for better usability.
+myLockScreen :: X ()
+myLockScreen = spawn "betterlockscreen --lock blur"
+
+-- Tree config for my exit select actions.
+-- The gist is to keep the config simple,
+-- so using some default values and overriding some other
+-- colors just to make it prettier.
+myTreeConf :: X (TSConfig a)
+myTreeConf = do
+   (screenW, screenH) <- getCurrentScreenDimensions
+   return $ def { ts_background   = 0xdd282c34
+                  , ts_font         = "xft:Hack Nerd Font:size=10:Regular"
+                  , ts_node         = (0xffd0d0d0, 0xff1c1f24)
+                  , ts_nodealt      = (0xffd0d0d0, 0xff282c34)
+                  , ts_highlight    = (0xffffffff, 0xff755999)
+                  , ts_extra        = 0xffd0d0d0
+                  , ts_node_width   = 200
+                  , ts_node_height  = 20
+                  , ts_originX      = (screenW `div` 2) - 50
+                  , ts_originY      = (screenH `div` 2) - 50
+                  , ts_indent       = 80
+                }
+
+-- Exit select actions, using XMonad.Actions.TreeSelect.
+-- See keybindings for how to use this.
+exitSelectAction = do
+   conf <- myTreeConf
+   treeselectAction conf
+      [ Node (TSNode "\xf0a48 Log out"    "Logs out from this session"      (io (exitWith ExitSuccess))) [] -- \xf0a48 is an exit symbol
+      , Node (TSNode "\xf011 Shutdown" "Poweroff the system" (spawn "systemctl poweroff")) [] -- \xf011 is power symbol
+      , Node (TSNode "\xf0709 Restart" "Restart the system" (spawn "systemctl restart")) [] -- \xf0709 is a restart symbol
+      , Node (TSNode "\xf023 Lock screen" "Locks the screen" myLockScreen) [] -- \xf023 is a lock symbol
+      , Node (TSNode "\xf073a Cancel" "Exit this menu." (return ())) [] -- \xf073a is a cancel symbol
+      ]
 ------------------------------------------------------------------------
 -- Startup hook
 
