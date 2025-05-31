@@ -63,6 +63,6 @@ Config { font = "Hack Nerd Font Mono 9"
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%StdinReader% <fc=#666666>|</fc> <box type=Bottom width=2 mb=2 color=#ecbe7b><fc=#ecbe7b>%cpu%</fc></box> <fc=#666666>|</fc> %coretemp% <fc=#666666>|</fc> <box type=Bottom width=2 mb=2 color=#ff6c6b><fc=#ff6c6b>%memory%</fc></box><fc=#666666>|</fc> <box type=Bottom width=2 mb=2 color=#f49ac2><fc=#f49ac2>%wifi%</fc></box>}{ <box type=Bottom width=2 mb=2 color=#ee82ee><fc=#ee82ee>%audio%</fc></box><fc=#666666>|</fc> <box type=Bottom width=2 mb=2 color=#ee9a00><fc=#ee9a00>%date%</fc></box> <fc=#666666>|</fc> <box type=Bottom width=2 mb=2>%penguin% %uname%</box> <fc=#666666>|</fc> %battery% "
+       , template = "%StdinReader% <fc=#666666>|</fc> <box type=Bottom width=2 mb=2 color=#ecbe7b><fc=#ecbe7b>%cpu%</fc></box> <fc=#666666>|</fc> %coretemp% <fc=#666666>|</fc> <box type=Bottom width=2 mb=2 color=#ff6c6b><fc=#ff6c6b>%memory%</fc></box><fc=#666666> |</fc> <box type=Bottom width=2 mb=2 color=#f49ac2><fc=#f49ac2>%wifi%</fc></box>}{ <box type=Bottom width=2 mb=2 color=#ee82ee><fc=#ee82ee>%audio%</fc></box><fc=#666666>|</fc> <box type=Bottom width=2 mb=2 color=#ee9a00><fc=#ee9a00>%date%</fc></box> <fc=#666666>|</fc> <box type=Bottom width=2 mb=2>%penguin% %uname%</box> <fc=#666666></fc>| %battery% |<action=`xmonad-power-menu.sh`><fn=1> ⏻ </fn></action> "
 }
 

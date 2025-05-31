@@ -4,6 +4,8 @@
 --    pacman -S alsa-utils dmenu xmobar alacritty tmux conky dunst
 --    yay -S betterlockscreen
 
+import XMonad.Actions.GridSelect
+
 import XMonad
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Run
@@ -157,6 +159,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((0                , xF86XK_AudioMute), spawn ("amixer -q sset Master toggle"))
 
 
+    , ((modm .|. shiftMask, xK_q), showPowerMenu)
     , ((modm .|. controlMask, xK_f), spawn ("thunar"))
     , ((modm .|. shiftMask, xK_f), spawn ("firefox"))
     , ((modm .|. shiftMask, xK_g), spawn ("chromium"))
@@ -272,6 +275,55 @@ myManageHook = composeAll
             l = 3/5
             w = 3/5
 
+
+-- Power menu actions - using String keys for selection
+powerMenuActions :: [(String, String)]
+powerMenuActions = 
+    [ ("\xf023 Lock Screen", "lock")   -- \xf023 => 
+    , ("\xf0343 Logout", "logout")     -- \xf0343 => 󰍃
+    , ("\xf044f Reboot", "reboot")     -- \xf044f => 󰑏
+    , ("\xf0425 Shutdown", "shutdown") -- \xf0425 => 󰐥
+    , ("\xf04b2 Suspend", "suspend")   -- \xf04b2 => 󰒲
+    , ("\xf467 Cancel", "cancel")      -- \xf467 => 
+    ]
+
+-- GridSelect configuration for power menu  
+powerMenuConfig :: GSConfig String
+powerMenuConfig = (buildDefaultGSConfig myStringColorizer)
+    { gs_cellheight   = 80
+    , gs_cellwidth    = 150
+    , gs_cellpadding  = 12
+    , gs_originFractX = 0.8
+    , gs_originFractY = 0.1
+    , gs_font         = "xft:Hack Nerd Font Mono:size=10"
+    , gs_bordercolor  = "#444444"
+    }
+
+-- String colorizer for our power menu
+myStringColorizer :: String -> Bool -> X (String, String)
+myStringColorizer s active = return $ if active
+    then ("#44AACC", "#000000")  -- active: blue bg, black fg
+    else ("#3b3b3b", "#ffffff")  -- inactive: dark bg, white fg
+
+-- Execute the selected power action
+executePowerAction :: String -> X ()
+executePowerAction action = case action of
+    "lock"     -> spawn "xlock"
+    "logout"   -> io exitSuccess
+    "reboot"   -> spawn "systemctl reboot"
+    "shutdown" -> spawn "systemctl poweroff"
+    "suspend"  -> spawn "systemctl suspend"
+    "cancel"   -> return ()
+    _          -> return ()
+
+-- Show power menu function
+showPowerMenu :: X ()
+showPowerMenu = do
+    unGrab
+    selection <- gridselect powerMenuConfig powerMenuActions
+    case selection of
+        Just action -> executePowerAction action
+        Nothing     -> return ()
 
 ------------------------------------------------------------------------
 -- Event handling
