@@ -8,7 +8,8 @@ setopt extendedglob       # Extended globbing. Allows using regular expresions w
 setopt nocaseglob         # Case insensitive globbing.
 setopt rcexpandparam      # Array expansion with parameters
 setopt histignorealldups  # If a new command is a duplicate, remove the older one
-setopt autocd             # if only directory path is entered, cd there.
+unsetopt autocd           # Disable automatically entering a directory if only directory name is typed into the CLI.
+                          # This is awkward when you have an executable also named the same as the directory.
 
 export LC_ALL=en_US.UTF-8
 
