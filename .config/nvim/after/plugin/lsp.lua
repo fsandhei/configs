@@ -74,3 +74,15 @@ cmp.setup({
       ['<CR>'] = cmp.mapping.confirm({ select = true }),
    }
 })
+
+lspconfig.gopls.setup({
+   settings = {
+      gopls = {
+         analyses = {
+            unusedparams = true,
+         },
+         staticcheck = true,
+         gofumpt = true,
+      },
+   },
+})

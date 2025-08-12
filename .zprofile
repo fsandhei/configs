@@ -11,7 +11,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 # so we don't scale, but rather keep a fixed font size.
 export WINIT_X11_SCALE_FACTOR=1
 
-export PATH="$HOME/.local/bin:$PATH:$HOME/.zsh:$HOME/bin:$HOME/.cargo/bin:$VCPKG_ROOT"
+export PATH="$HOME/.local/bin:$PATH:$HOME/.zsh:$HOME/bin:$HOME/.cargo/bin:$VCPKG_ROOT:$HOME/go/bin"
 
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
    exec startx
