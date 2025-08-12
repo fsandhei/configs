@@ -3,6 +3,8 @@
 -- Dependencies
 --    pacman -S alsa-utils dmenu xmobar alacritty tmux conky dunst
 --    yay -S betterlockscreen
+--    xdotool (for fetching active window)
+--    maim (for taking screenshots).
 
 import Data.Tree
 
@@ -163,7 +165,12 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. controlMask, xK_f), spawn ("thunar"))
     , ((modm .|. shiftMask, xK_f), spawn ("firefox"))
     , ((modm .|. shiftMask, xK_g), spawn ("chromium"))
-    , ((modm .|. shiftMask, xK_u), spawn ("pavucontrol")) -- spawns pavucontrol, for audio control (pulseaudio).
+    -- spawns pavucontrol, for audio control (pulseaudio).
+    , ((modm .|. shiftMask, xK_u), spawn ("pavucontrol"))
+    -- Take screenshot, selecting region.
+    , ((modm .|. shiftMask, xK_s), spawn ("maim -s | xclip -selection clipboard -t image/png"))
+    -- Take screenshot of active window.
+    , ((modm .|. controlMask, xK_s), spawn ("maim $(xdotool getactivewindow) | xclip -selection clipboard -t image/png"))
     ]
     ++
 
@@ -346,9 +353,9 @@ exitSelectAction = do
    conf <- myTreeConf
    treeselectAction conf
       [ Node (TSNode "\xf0a48 Log out"    "Logs out from this session."      (io (exitWith ExitSuccess))) [] -- \xf0a48 is an exit symbol
+      , Node (TSNode "\xf023 Lock screen" "Locks the screen." myLockScreen) [] -- \xf023 is a lock symbol
       , Node (TSNode "\xf011 Shutdown" "Powers off the system." (spawn "systemctl poweroff")) [] -- \xf011 is power symbol
       , Node (TSNode "\xf0709 Restart" "Restarts the system." (spawn "systemctl restart")) [] -- \xf0709 is a restart symbol
-      , Node (TSNode "\xf023 Lock screen" "Locks the screen." myLockScreen) [] -- \xf023 is a lock symbol
       , Node (TSNode "\xf073a Cancel" "Exits this menu." (return ())) [] -- \xf073a is a cancel symbol
       ]
 ------------------------------------------------------------------------
@@ -363,6 +370,7 @@ myStartupHook = do
    spawnOnce "nitrogen --restore &"
    -- For better handling of mouse handling in X, for example having
    -- consistent and smooth scrolling.
+   spawnOnce "$HOME/.local/bin/center-cursor.sh"
    spawnOnce "imwheel &"
    spawnOnce "picom &"
    spawnOnce "dunst &"
@@ -405,7 +413,10 @@ help :: String
 help = unlines ["The default modifier key is 'alt'. Default keybindings:",
     "",
     "-- launching and killing programs",
-    "mod-Shift-Enter  Launch xterminal",
+    "mod-g            Power menu",
+    "mod-f            Launch Firefox",
+    "mod-Shift-g      Launch Chromium",
+    "mod-Shift-Enter  Launch terminal",
     "mod-p            Launch dmenu",
     "mod-Shift-p      Launch gmrun",
     "mod-Shift-c      Close/kill the focused window",
