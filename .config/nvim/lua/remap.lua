@@ -27,3 +27,6 @@ vim.keymap.set('v', "<C-h>", "<cmd>nohlsearch<CR>", { noremap = true })
 
 -- Convenience remap for pasting over highlighted text with content from buffer.
 vim.keymap.set('x', "<leader>p", "\"_dP")
+
+-- Launch neoclip.
+vim.keymap.set('n', '<C-l>', function() require('neoclip.fzf')() end)

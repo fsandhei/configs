@@ -355,7 +355,7 @@ exitSelectAction = do
       [ Node (TSNode "\xf0a48 Log out"    "Logs out from this session."      (io (exitWith ExitSuccess))) [] -- \xf0a48 is an exit symbol
       , Node (TSNode "\xf023 Lock screen" "Locks the screen." myLockScreen) [] -- \xf023 is a lock symbol
       , Node (TSNode "\xf011 Shutdown" "Powers off the system." (spawn "systemctl poweroff")) [] -- \xf011 is power symbol
-      , Node (TSNode "\xf0709 Restart" "Restarts the system." (spawn "systemctl restart")) [] -- \xf0709 is a restart symbol
+      , Node (TSNode "\xf0709 Restart" "Restarts the system." (spawn "systemctl reboot")) [] -- \xf0709 is a restart symbol
       , Node (TSNode "\xf073a Cancel" "Exits this menu." (return ())) [] -- \xf073a is a cancel symbol
       ]
 ------------------------------------------------------------------------
@@ -370,7 +370,7 @@ myStartupHook = do
    spawnOnce "nitrogen --restore &"
    -- For better handling of mouse handling in X, for example having
    -- consistent and smooth scrolling.
-   spawnOnce "$HOME/.local/bin/center-cursor.sh"
+   spawn "$HOME/.local/bin/center-cursor.sh"
    spawnOnce "imwheel &"
    spawnOnce "picom &"
    spawnOnce "dunst &"
