@@ -13,9 +13,11 @@ import XMonad.Actions.TreeSelect
 import XMonad
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Run
-import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.StatusBar
+import XMonad.Hooks.StatusBar.PP
+
 import Data.Monoid
 import System.Exit
 
@@ -140,12 +142,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Deincrement the number of windows in the master area
     , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
-
-    -- Toggle the status bar gap
-    -- Use this binding with avoidStruts from Hooks.ManageDocks.
-    -- See also the statusBar function from Hooks.DynamicLog.
-    --
-    -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
 
     -- Quit xmonad
     , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
@@ -299,18 +295,25 @@ myEventHook = mempty
 -- Perform an arbitrary action on each internal state change or X event.
 -- See the 'XMonad.Hooks.DynamicLog' extension for examples.
 --
-myLogHook xmproc0 xmproc1 = dynamicLogWithPP xmobarPP
-  { ppLayout = wrap "(<fc=#e4b63c>" "</fc>)"
-  , ppCurrent = xmobarColor "#98be65" "" . wrap "[" "]"  -- Current workspace in xmobar
-  , ppVisible = xmobarColor "#98be65" ""                 -- Non-focused (but still visible) screen
-  , ppHidden = xmobarColor "#82aaff" "" . wrap "*" ""    -- Hidden workspaces in xmobar
-  , ppHiddenNoWindows = xmobarColor "#c792ea" ""         -- Hidden workspaces but no windows in xmobar
-  , ppSep = "<fc=#666666> | </fc>"                       -- Separators in xmobar
-  , ppTitle = xmobarColor "#0acdff" "" . shorten 30      -- Title of active window in xmobar
-  , ppOrder = \(ws:_:t:_) -> [ws]++[t]                   -- Formatting of input to xmobar
-  , ppOutput = \x -> hPutStrLn xmproc0 x                 -- Instance of xmobar on monitor 1
-               >> hPutStrLn xmproc1 x                    -- Instance of xmobar on monitor 2
-  }
+-- TODO: Try out this newer way of defining status bar in XMonad.
+-- Need to also tell XMobar to read from the _XMONAD_LOG property, which can
+-- be done by specifying the XMonadLog plugin in my xmobarrc config.
+myXmobarPP = xmobarPP {
+   ppLayout = wrap "(<fc=#e4b63c>" "</fc>)"
+   , ppCurrent = xmobarColor "#98be65" "" . wrap "[" "]"  -- Current workspace in xmobar
+   , ppVisible = xmobarColor "#98be65" ""                 -- Non-focused (but still visible) screen
+   , ppHidden = xmobarColor "#82aaff" "" . wrap "*" ""    -- Hidden workspaces in xmobar
+   , ppHiddenNoWindows = xmobarColor "#c792ea" ""         -- Hidden workspaces but no windows in xmobar
+   , ppSep = "<fc=#666666> | </fc>"                       -- Separators in xmobar
+   , ppTitle = xmobarColor "#0acdff" "" . shorten 30      -- Title of active window in xmobar
+   , ppOrder = \(ws:_:t:_) -> [ws]++[t]                   -- Formatting of input to xmobar
+}
+
+-- Assumes a dual screen set up. Does not hurt if the second screen is not connected.
+mySBMainWindow = statusBarProp "xmobar -x 0 /home/fredrik/.config/xmobar/xmobarrc" (pure myXmobarPP)
+mySBSecondWindow = statusBarProp "xmobar -x 1 /home/fredrik/.config/xmobar/xmobarrc" (pure myXmobarPP)
+
+mySBCombined = mySBMainWindow <> mySBSecondWindow
 
 ------------------------------------------------------------------------
 -- Exit Selection Actions
@@ -382,9 +385,7 @@ myStartupHook = do
 -- Run xmonad with the settings you specify. No need to modify this.
 --
 main = do
-   xmproc0 <- spawnPipe "xmobar -x 0 /home/fredrik/.config/xmobar/xmobarrc"
-   xmproc1 <- spawnPipe "xmobar -x 1 /home/fredrik/.config/xmobar/xmobarrc"
-   xmonad $ docks $ def {
+   xmonad $ withSB mySBCombined $ docks $ def {
 -- No need to modify this.
       -- simple stuff
         terminal           = myTerminal,
@@ -404,7 +405,6 @@ main = do
         layoutHook         = myLayout,
         manageHook         = myManageHook,
         handleEventHook    = myEventHook,
-        logHook            = myLogHook xmproc0 xmproc1,
         startupHook        = myStartupHook
     }
 
