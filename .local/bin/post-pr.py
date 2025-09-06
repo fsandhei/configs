@@ -67,13 +67,13 @@ def get_git_remotes():
         error("Failed to get git remotes. cwd = {}".format(os.getcwd()), remotes_process.returncode);
 
 def list_prs(owner, repo, token):
-    user = get_user()
+    user = get_user(token)
     github_api_prs_url = "https://api.github.com/repos/{}/{}/pulls".format(owner, repo)
     
     headers = GITHUB_REST_API_BASIC_HEADER
 
     if token is not None:
-        headers["Authorization"] = "Bearer " + token
+        headers.update({"Authorization": "Bearer " + token})
 
     result = requests.get(github_api_prs_url, headers = headers)
     json_doc = result.json()
@@ -87,13 +87,13 @@ def list_prs(owner, repo, token):
 
     return prs
 
-def try_announce_github(owner, repo, pr_number, gh_token = None):
+def try_announce_github(owner, repo, pr_number, token: str | None = None):
     github_api_pr_url = "https://api.github.com/repos/{}/{}/pulls/{}".format(owner, repo, pr_number)
 
     headers = GITHUB_REST_API_BASIC_HEADER
 
-    if gh_token is not None:
-        headers["Authorization"] = "Bearer " + gh_token
+    if token is not None:
+        headers.update({"Authorization": "Bearer " + token})
 
     result = requests.get(github_api_pr_url, headers = headers)
     json_doc = result.json()
@@ -139,8 +139,11 @@ class Repository:
                 raise RuntimeError("Could not figure out domain!")
         self.domain = domain
 
-def get_user():
+def get_user(token: str | None = None):
     headers = GITHUB_REST_API_BASIC_HEADER
+    if token is not None:
+        headers.update({"Authorization": "Bearer " + token})
+
     user_api_url = "https://api.github.com/user"
 
     result = requests.get(user_api_url, headers = headers)
@@ -181,7 +184,7 @@ def main():
             print(f"Attempting to fetch PR {args.pr_number} in {owner}/{project} ...")
 
             if repo.domain == "github":
-                try_announce_github(owner, project, args.pr_number)
+                try_announce_github(owner, project, args.pr_number, args.gh_token)
             else:
                 raise RuntimeError(f"unhandled repository domain {repo.domain}")
         return 0
