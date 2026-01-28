@@ -16,6 +16,7 @@ GITHUB_REST_API_BASIC_HEADER = {
                                  "Accept": "application/vnd.github+json",
                                  "X-GitHub-Api-Version": "2022-11-28"
                              }
+GITHUB_REST_API_BASE_ENDPOINT = "https://api.github.com"
 
 class PullRequest:
     def __init__(self):
@@ -46,7 +47,13 @@ def get_args():
             """),
             formatter_class = argparse.RawTextHelpFormatter)
 
+    if len(sys.argv) == 1:
+        parser.print_help()
+        sys.exit(1)
+
     parser.add_argument("--pr-number", help = "PR number", type = int)
+    parser.add_argument("-s", "--silent", help = "When used with --pr-number, only print out the announcement body",
+                        action = "store_true")
     parser.add_argument("--gh-token", help = "GitHub token")
     parser.add_argument("--list", action = "store_true", default = False, dest = "list_prs", help = "List pull requests owned by me")
 
@@ -68,7 +75,7 @@ def get_git_remotes():
 
 def list_prs(owner, repo, token):
     user = get_user(token)
-    github_api_prs_url = "https://api.github.com/repos/{}/{}/pulls".format(owner, repo)
+    github_api_prs_url = GITHUB_REST_API_BASE_ENDPOINT + "/repos/{}/{}/pulls".format(owner, repo)
     
     headers = GITHUB_REST_API_BASIC_HEADER
 
@@ -77,18 +84,24 @@ def list_prs(owner, repo, token):
 
     result = requests.get(github_api_prs_url, headers = headers)
     json_doc = result.json()
+    if result.status_code == 200:
+        prs = []
+        for pr_json in json_doc:
+            pr = PullRequest()
+            pr.parse_response_from_json_github(pr_json)
+            if pr.poster == user:
+                prs.append(pr)
 
-    prs = []
-    for pr_json in json_doc:
-        pr = PullRequest()
-        pr.parse_response_from_json_github(pr_json)
-        if pr.poster == user:
-            prs.append(pr)
+        return prs
+    else:
+        err_msg = f"""\
+Failed to list of pull requests:
+{json.dumps(json_doc, indent = 4)}
+"""
+        raise RuntimeError(err_msg)
 
-    return prs
-
-def try_announce_github(owner, repo, pr_number, token: str | None = None):
-    github_api_pr_url = "https://api.github.com/repos/{}/{}/pulls/{}".format(owner, repo, pr_number)
+def try_announce_github(owner, repo, pr_number, token: str | None = None, silent: bool = False):
+    github_api_pr_url = GITHUB_REST_API_BASE_ENDPOINT + "/repos/{}/{}/pulls/{}".format(owner, repo, pr_number)
 
     headers = GITHUB_REST_API_BASIC_HEADER
 
@@ -99,16 +112,21 @@ def try_announce_github(owner, repo, pr_number, token: str | None = None):
     json_doc = result.json()
 
     if result.status_code == requests.codes.ok:
-
         url = json_doc["html_url"]
         title = json_doc["title"]
         adds = json_doc["additions"]
         dels = json_doc["deletions"]
 
-        print(f"""Announce PR with message:
+        pr_body = f"{url} {title} [+{adds}/-{dels}]"
 
-                {url} {title} [+{adds}/-{dels}]
-              """)
+        if not silent:
+            print(f"""Announce PR with message:
+
+                  {pr_body}
+                  """)
+        else:
+            print(f"{pr_body}")
+
     else:
         msg = json_doc["message"]
         err_msg = f"Failed to get information about PR #{pr_number}: {msg}"
@@ -144,7 +162,7 @@ def get_user(token: str | None = None):
     if token is not None:
         headers.update({"Authorization": "Bearer " + token})
 
-    user_api_url = "https://api.github.com/user"
+    user_api_url = GITHUB_REST_API_BASE_ENDPOINT + "/user"
 
     result = requests.get(user_api_url, headers = headers)
     json_doc = result.json()
@@ -181,10 +199,11 @@ def main():
                     print(f"   {num_i_pr}: {pr}")
             sys.exit(0)
         else:
-            print(f"Attempting to fetch PR {args.pr_number} in {owner}/{project} ...")
+            if not args.silent:
+                print(f"Attempting to fetch PR {args.pr_number} in {owner}/{project} ...")
 
             if repo.domain == "github":
-                try_announce_github(owner, project, args.pr_number, args.gh_token)
+                try_announce_github(owner, project, args.pr_number, args.gh_token, args.silent)
             else:
                 raise RuntimeError(f"unhandled repository domain {repo.domain}")
         return 0
