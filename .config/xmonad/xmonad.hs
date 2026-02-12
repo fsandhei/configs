@@ -13,6 +13,7 @@ import XMonad.Actions.TreeSelect
 import XMonad
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Run
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.StatusBar
@@ -370,14 +371,12 @@ exitSelectAction = do
 
 myStartupHook :: X ()
 myStartupHook = do
+   -- Display background image.
    spawnOnce "nitrogen --restore &"
-   -- For better handling of mouse handling in X, for example having
-   -- consistent and smooth scrolling.
-   spawn "$HOME/.local/bin/center-cursor.sh"
-   spawnOnce "imwheel &"
+   -- Start comppositor
    spawnOnce "picom &"
+   -- Start notification daemon.
    spawnOnce "dunst &"
-   spawnOnce "conky --daemonize --pause=5"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
@@ -385,7 +384,7 @@ myStartupHook = do
 -- Run xmonad with the settings you specify. No need to modify this.
 --
 main = do
-   xmonad $ withSB mySBCombined $ docks $ def {
+   xmonad $ ewmh $ withSB mySBCombined $ docks $ def {
 -- No need to modify this.
       -- simple stuff
         terminal           = myTerminal,

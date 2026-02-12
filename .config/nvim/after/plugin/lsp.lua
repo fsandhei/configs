@@ -52,6 +52,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
                vim.lsp.buf.format({ bufnr = bufnr })
             end,
          })
+         -- Go format on save. Organize imports and formats code.
+         vim.api.nvim_create_autocmd('BufWritePre', {
+            pattern = "*.go",
+            callback = function()
+               vim.lsp.buf.format({ async = false })
+            end
+         })
       end
 
       -- Enable inlay hints

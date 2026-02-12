@@ -31,6 +31,7 @@ xrandr
 # This is done to make the XResources settings take place properly and be respected by XMonad.
 # If done after, these settings might not be respected.
 "$HOME"/.local/bin/setup-screen.sh
+"$HOME"/.local/bin/center-cursor.sh
 
 # By default, the X shaped cursor appears in those window managers
 # that don't set a default cursor.

@@ -16,15 +16,12 @@ offscreen_device="card1-$offscreen"
 
 current_state="$(cat /sys/class/drm/$offscreen_device/status)"
 
-# Required for use with dbus hotplug events.
-user_id="$(id -u)"
-
-export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$user_id/bus"
-
 if [ "$current_state" = "connected" ]; then
     echo "setting up dual-screen"
     xrandr --output "$main_screen" --auto --output "$offscreen" --auto --right-of "$main_screen"
-    sleep 0.5
+    # Empirically selected, not sure on what this value should be.
+    # Notice that the window setup requires more time during cold startup of the display.
+    sleep 1.0
 else
     echo "setting up single screen"
     xrandr --output "$main_screen" --auto
@@ -33,6 +30,13 @@ fi
 
 # Draw background
 nitrogen --restore
+
+XMOBAR_PS="$(ps -eF | grep "[m]obar" | grep -v grep | awk '{ print $2 }')"
+
+if [[ ! -z "$XMOBAR_PS" ]]; then
+    echo "Killing existing processes of xmobar, before restarting xmobar."
+    echo "${XMOBAR_PS}" | xargs kill
+fi
 
 # Restart xmonad, or else we may miss the status bar and
 # other commands being run for the second screen.

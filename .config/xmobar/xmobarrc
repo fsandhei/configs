@@ -22,7 +22,7 @@ Config { font = "Hack Nerd Font Mono 9"
        , lowerOnStart = True
        , pickBroadest = False
        -- Let window status be fixed.
-       , persistent = False
+       , persistent = True
        , hideOnStart = False
        , iconRoot = "."
        , allDesktops = True
