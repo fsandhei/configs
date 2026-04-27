@@ -1,68 +1,106 @@
--- Xmobar (http://projects.haskell.org/xmobar/)
--- Color scheme: Doom One
+Config { font         = "Hack Nerd Font Mono 9"
+       , additionalFonts = [ "SpaceMono Nerd Font 8" ]
 
--- Dependencies
--- Hack Nerd Font Mono
+       -- Catppuccin Mocha
+       , bgColor      = "#1e1e2e"   -- base
+       , fgColor      = "#cdd6f4"   -- text
+       , borderColor  = "#313244"   -- surface0
+       , border       = TopB
+       , alpha        = 255
 
-Config { font = "Hack Nerd Font Mono 9"
-       , additionalFonts = ["SpaceMono Nerd Font 8"]
-       , borderColor = "black"
-       , border = TopB
-       , bgColor = "#1a1b26"
-       , fgColor = "#a9b1d6"
-       , alpha = 255
-       -- Position TopSize and BottomSize take 3 arguments:
-       --   an alignment parameter (L/R/C) for Left, Right or Center.
-       --   an integer for the percentage width, so 100 would be 100%.
-       --   an integer for the minimum pixel height for xmobar, so 24 would force a height of at least 24 pixels.
-       --   NOTE: The height should be the same as the trayer (system tray) height.
-       , position = TopSize L 100 19
-       , textOffset = -1
-       , iconOffset = -1
-       , lowerOnStart = True
-       , pickBroadest = False
-       -- Let window status be fixed.
-       , persistent = True
-       , hideOnStart = False
-       , iconRoot = "."
-       , allDesktops = True
+       , position     = TopSize L 100 24
+       , textOffset   = -1
+       , iconOffset   = -1
+
+       , lowerOnStart    = True
+       , pickBroadest    = False
+       , persistent      = True
+       , hideOnStart     = False
+       , iconRoot        = "."
+       , allDesktops     = True
        , overrideRedirect = True
-       , commands = [Run Cpu ["--template", "<fn=1></fn> <total>%", "-L","3","-H","50",
-                     "--normal","green","--high","red"] 10
-                             -- cpu core temperature monitor
-                    , Run CoreTemp [ "--template" , "<box type=Bottom width=2 color=#d79921><fc=#d79921><fn=1></fn></fc> <core0>°C</box>"
-                                   , "--Low"      , "70"        -- units: °C
-                                   , "--High"     , "80"        -- units: °C
-                                   , "--low"      , "lightgreen"
-                                   , "--normal"   , "lightorange"
-                                   , "--high"     , "lightred"
-                                   ] 50
-                    , Run Com "./.config/xmobar/wireless.sh" [] "wifi" 50
-		    , Run Com "./.config/xmobar/audio.sh" [] "audio" 10
-                    , Run Memory ["-t","<fn=1>\xefc5</fn><hspace=3/> <usedratio>%"] 10
-                    , Run Swap [] 10
-                    , Run Com "echo" ["\xf17c"] "penguin" 3600
-                    , Run Com "uname" ["-s","-r"] "" 36000
-                    , Run Date "%a %b %d %Y %H:%M:%S" "date" 10
-                    , Run Battery [ "--template" , "<box type=Bottom width=2 color=#f7768e>\xf0079 <acstatus></box>"
-                             , "--Low"      , "10"        -- units: %
-                             , "--High"     , "80"        -- units: %
-                             , "--low"      , "darkred"
-                             , "--normal"   , "darkorange"
-                             , "--high"     , "lightgreen"
 
-                             , "--" -- battery specific options
-                                       -- discharging status
-                                       , "-o"	, "<left>% (<timeleft>)"
-                                       -- AC "on" status
-                                       , "-O"	, "<fc=#dAA520>Charging (<left>%)</fc>"
-                                       -- charged status
-                                       , "-i"	, "<fc=lightgreen>Charged</fc>"
-                       ] 50
-                     , Run XMonadLog
-                    ]
-       , sepChar = "%"
+       , commands =
+           [
+             -- CPU usage — Catppuccin Yellow
+             Run Cpu
+               [ "--template" , "<fn=1></fn> <total>%"
+               , "-L" , "10"
+               , "-H" , "60"
+               , "--normal" , "#a6e3a1"   -- green
+               , "--high"   , "#f38ba8"   -- red
+               ] 10
+
+             -- CPU core temperature — Catppuccin Peach
+             -- All colour values are hex to avoid X11 name lookup failures
+           , Run CoreTemp
+               [ "--template" , "<fn=1></fn> <core0>°C"
+               , "--Low"    , "60"
+               , "--High"   , "80"
+               , "--low"    , "#a6e3a1"   -- green
+               , "--normal" , "#f9e2af"   -- yellow
+               , "--high"   , "#f38ba8"   -- red
+               ] 50
+
+             -- Memory — Catppuccin Blue
+           , Run Memory
+               [ "--template" , "<fn=1>󰍛</fn> <usedratio>%"
+               , "-L" , "50"
+               , "-H" , "85"
+               , "--normal" , "#89b4fa"   -- blue
+               , "--high"   , "#f38ba8"   -- red
+               ] 10
+
+             -- Swap (hidden in template, kept for reference)
+           , Run Swap [] 30
+
+             -- Wireless via script — Catppuccin Teal
+           , Run Com "./.config/xmobar/wireless.sh" [] "wifi" 50
+
+             -- Audio via script — Catppuccin Pink
+           , Run Com "./.config/xmobar/audio.sh" [] "audio" 10
+
+             -- Battery — Catppuccin Green / Red
+           , Run Battery
+               [ "--template" , "<acstatus>"
+               , "--Low"    , "15"
+               , "--High"   , "80"
+               , "--low"    , "#f38ba8"   -- red
+               , "--normal" , "#fab387"   -- peach
+               , "--high"   , "#a6e3a1"   -- green
+               , "--"
+               , "-o" , "<fn=1>󰁹</fn> <left>% (<timeleft>)"
+               , "-O" , "<fn=1>󰂄</fn> <fc=#f9e2af><left>%</fc>"
+               , "-i" , "<fn=1>󰁹</fn> <fc=#a6e3a1>Full</fc>"
+               ] 50
+
+             -- Date & time — Catppuccin Mauve
+           , Run Date "<fn=1>󰃰</fn> %a %b %d  %H:%M:%S" "date" 10
+
+             -- XMonad workspace / layout log
+           , Run XMonadLog
+           ]
+
+       , sepChar  = "%"
        , alignSep = "}{"
-       , template = "%XMonadLog% <fc=#666666>|</fc> <box type=Bottom width=2 mb=2 color=#ecbe7b><fc=#ecbe7b>%cpu%</fc></box> <fc=#666666>|</fc> %coretemp% <fc=#666666>|</fc> <box type=Bottom width=2 mb=2 color=#ff6c6b><fc=#ff6c6b>%memory%</fc></box><fc=#666666> |</fc> <box type=Bottom width=2 mb=2 color=#f49ac2><fc=#f49ac2>%wifi%</fc></box>}{ <box type=Bottom width=2 mb=2 color=#ee82ee><fc=#ee82ee>%audio%</fc></box><fc=#666666>|</fc> <box type=Bottom width=2 mb=2 color=#ee9a00><fc=#ee9a00>%date%</fc></box> <fc=#666666>|</fc> <box type=Bottom width=2 mb=2>%penguin% %uname%</box> <fc=#666666></fc>| %battery%"
-}
 
+       --  LEFT: workspaces | cpu · temp | mem | wifi
+       -- RIGHT: audio | battery | date
+       , template = "\
+           \%XMonadLog%\
+           \ <fc=#45475a>|</fc> \
+           \<box type=Bottom width=2 mb=2 color=#f9e2af><fc=#f9e2af>%cpu%</fc></box>\
+           \ <fc=#45475a>·</fc> \
+           \<box type=Bottom width=2 mb=2 color=#fab387><fc=#fab387>%coretemp%</fc></box>\
+           \ <fc=#45475a>|</fc> \
+           \<box type=Bottom width=2 mb=2 color=#89b4fa><fc=#89b4fa>%memory%</fc></box>\
+           \ <fc=#45475a>|</fc> \
+           \<box type=Bottom width=2 mb=2 color=#94e2d5><fc=#94e2d5>%wifi%</fc></box>\
+           \}{\
+           \<box type=Bottom width=2 mb=2 color=#f5c2e7><fc=#f5c2e7>%audio%</fc></box>\
+           \ <fc=#45475a>|</fc> \
+           \<box type=Bottom width=2 mb=2 color=#a6e3a1><fc=#a6e3a1>%battery%</fc></box>\
+           \ <fc=#45475a>|</fc> \
+           \<box type=Bottom width=2 mb=2 color=#cba6f7><fc=#cba6f7>%date%</fc></box>\
+           \ "
+}

@@ -30,6 +30,7 @@ import XMonad.Layout.Renamed
 import XMonad.Layout.Simplest
 import XMonad.Layout.Spacing
 import XMonad.Layout.SubLayouts
+import XMonad.Layout.ThreeColumns
 
 -- Library that contains mapping of XF86 keyboard types.
 -- Using this for having mapping of sound keys for now,
@@ -73,8 +74,27 @@ myModMask       = mod4Mask
 -- A tagging example:
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
---
-myWorkspaces = ["dev", "www", "etc", "doc", "sys", "vbox", "mail"]
+myWorkspaces = map withIcon workspaceConfig
+   where
+      withIcon(icon, workspace) = icon ++ " " ++ workspace
+
+      workspaceConfig =
+         [ (devIcon,  "dev")
+         , (wwwIcon,  "www")
+         , (etcIcon,  "etc")
+         , (docIcon,  "doc")
+         , (sysIcon,  "sys")
+         , (vboxIcon, "vbox")
+         , (mailIcon, "mail")
+         ]
+
+      devIcon  = "\xf489"  -- nf-oct-terminal
+      wwwIcon  = "\xe745"  -- nf-dev-firefox
+      etcIcon  = "\xf02b"  -- nf-fa-tag
+      docIcon  = "\xf15c"  -- nf-fa-file_text
+      sysIcon  = "\xf085"  -- nf-fa-cogs
+      vboxIcon = "\xf028"  -- nf-fa-volume_up
+      mailIcon = "\xf0e0"  -- nf-fa-envelope
 
 -- Border colors for unfocused and focused windows, respectively.
 myNormalBorderColor  = colorBack
@@ -227,6 +247,16 @@ mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
 -- Default layout. Yields the 'typical' tiling window style.
 -- limitWindows set maximum number of visible windows
 -- mySpacing sets the gap size around the windows in pixels
+threeCol = renamed [Replace "3col"]
+      $ limitWindows 7
+      $ smartBorders
+      $ mySpacing 5
+      $ ThreeColMid nmaster delta ratio
+   where
+      nmaster = 1
+      delta = 3/100
+      ratio = 1/2
+
 tall = renamed [Replace "tall"]
       $ limitWindows 5
       $ smartBorders
@@ -246,7 +276,7 @@ full = renamed [Replace "full"]
 
 myLayout = avoidStruts $ lessBorders (Combine Difference Screen OnlyFloat) $ myDefaultLayout
    where
-      myDefaultLayout = withBorder myBorderWidth tall ||| full
+      myDefaultLayout = withBorder myBorderWidth threeCol ||| tall ||| full
 
 ------------------------------------------------------------------------
 
@@ -270,6 +300,8 @@ myManageHook = composeAll
     , className =? "firefox"        --> doShift (myWorkspaces !! 1)
     -- values for the size of the thunar file manager box are just empirically chosen.
     , className =? "Thunar"         --> thunarFloatingRect
+    , className =? "Pavucontrol"    --> doCenterFloat
+    , isDialog                      --> doCenterFloat
     ]
    where
       thunarFloatingRect = doRectFloat $ W.RationalRect x y l w
@@ -307,7 +339,7 @@ myXmobarPP = xmobarPP {
    , ppHiddenNoWindows = xmobarColor "#c792ea" ""         -- Hidden workspaces but no windows in xmobar
    , ppSep = "<fc=#666666> | </fc>"                       -- Separators in xmobar
    , ppTitle = xmobarColor "#0acdff" "" . shorten 30      -- Title of active window in xmobar
-   , ppOrder = \(ws:_:t:_) -> [ws]++[t]                   -- Formatting of input to xmobar
+   , ppOrder = \(ws:l:t:_) -> [ws, t]
 }
 
 -- Assumes a dual screen set up. Does not hurt if the second screen is not connected.
