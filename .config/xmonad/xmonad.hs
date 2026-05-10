@@ -339,7 +339,7 @@ myXmobarPP = xmobarPP {
    , ppHiddenNoWindows = xmobarColor "#c792ea" ""         -- Hidden workspaces but no windows in xmobar
    , ppSep = "<fc=#666666> | </fc>"                       -- Separators in xmobar
    , ppTitle = xmobarColor "#0acdff" "" . shorten 30      -- Title of active window in xmobar
-   , ppOrder = \(ws:l:t:_) -> [ws, t]
+   , ppOrder = \(ws:l:t:_) -> [ws]
 }
 
 -- Assumes a dual screen set up. Does not hurt if the second screen is not connected.
