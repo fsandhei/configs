@@ -45,24 +45,22 @@ vim.api.nvim_create_autocmd('LspAttach', {
       end, opts)
 
       -- Format on save (equivalent to lsp.buffer_autoformat)
-      if client.supports_method('textDocument/formatting') then
-         vim.api.nvim_create_autocmd('BufWritePre', {
-            buffer = bufnr,
-            callback = function()
-               vim.lsp.buf.format({ bufnr = bufnr })
-            end,
-         })
-         -- Go format on save. Organize imports and formats code.
-         vim.api.nvim_create_autocmd('BufWritePre', {
-            pattern = "*.go",
-            callback = function()
-               vim.lsp.buf.format({ async = false })
-            end
-         })
-      end
+      vim.api.nvim_create_autocmd('BufWritePre', {
+         buffer = bufnr,
+         callback = function()
+            vim.lsp.buf.format({ bufnr = bufnr })
+         end,
+      })
+      -- Go format on save. Organize imports and formats code.
+      vim.api.nvim_create_autocmd('BufWritePre', {
+         pattern = "*.go",
+         callback = function()
+            vim.lsp.buf.format({ async = false })
+         end
+      })
 
       -- Enable inlay hints
-      if vim.lsp.inlay_hint and client.supports_method('textDocument/inlayHint') then
+      if vim.lsp.inlay_hint then
          vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
       end
    end,
@@ -74,10 +72,15 @@ vim.lsp.enable({ 'luals', 'rust_analyzer', 'gopls' })
 local cmp = require('cmp')
 
 cmp.setup({
-   mapping = {
+   mapping = cmp.mapping.preset.insert({
       ['<C-Space>'] = cmp.mapping.complete(),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }),
-   },
+      ['<CR>'] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Insert }),
+      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-n>'] = cmp.mapping.select_next_item(),
+      ['<C-p>'] = cmp.mapping.select_prev_item(),
+      ['<C-e>'] = cmp.mapping.abort(),
+   }),
    snippet = {
       expand = function(args)
          require("luasnip").lsp_expand(args.body)
