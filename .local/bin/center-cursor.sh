@@ -37,7 +37,7 @@ determine_monitor_geometry() {
             sel_screen_geometry="${curr_width} ${curr_height} ${x_offset} ${y_offset}"
             break
         fi
-    done < <(xrandr --listmonitors | grep -v '^Monitors:')
+    done < <(xrandr --listactivemonitors | grep -v '^Monitors:')
 }
 
 main() {
