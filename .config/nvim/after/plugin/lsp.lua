@@ -66,6 +66,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
    end,
 })
 
+vim.lsp.config('luals', {
+   cmd = { 'lua-language-server' },
+   filetypes = { 'lua' },
+   root_markers = { '.luarc.json', '.luarc.jsonc' },
+})
+
 vim.lsp.enable({ 'luals', 'rust_analyzer', 'gopls' })
 
 -- Auto completion
