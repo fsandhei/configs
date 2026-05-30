@@ -8,7 +8,7 @@
 
 import Data.Tree
 
-import XMonad.Actions.TreeSelect
+import XMonad.Actions.TreeSelect -- treeSelectAction
 
 import XMonad
 import XMonad.Util.SpawnOnce
@@ -184,6 +184,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_g), spawn ("chromium"))
     -- spawns pavucontrol, for audio control (pulseaudio).
     , ((modm .|. shiftMask, xK_u), spawn ("pavucontrol"))
+    -- Launch bluetuith, the Bluetooth manager TUI.
+    , ((modm .|. shiftMask, xK_b), spawn("alacritty" ++ " -e bluetuith"))
     -- Take screenshot, selecting region.
     , ((modm .|. shiftMask, xK_s), spawn ("maim -s | xclip -selection clipboard -t image/png"))
     -- Take screenshot of active window.
@@ -249,7 +251,6 @@ mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
 -- mySpacing sets the gap size around the windows in pixels
 threeCol = renamed [Replace "3col"]
       $ limitWindows 7
-      $ smartBorders
       $ mySpacing 5
       $ ThreeColMid nmaster delta ratio
    where
@@ -383,7 +384,7 @@ myTreeConf = do
                   , ts_indent       = 80
                 }
 
--- Exit select actions, using XMonad.Actions.TreeSelect.
+-- Exit select actions.
 -- See keybindings for how to use this.
 exitSelectAction = do
    conf <- myTreeConf
