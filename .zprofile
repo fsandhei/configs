@@ -3,7 +3,6 @@ export EDITOR="nvim"
 export VISUAL="nvim"
 export ZDOTDIR="$HOME/.config/zsh"
 export PDF="zathura"
-export VCPKG_ROOT="$HOME/dev/github/vcpkg"
 export XDG_CONFIG_HOME="$HOME/.config"
 # Scaling factor for alacritty. Alacritty scales with dpi by default.
 # When having two screens of different sizes this means that the font size
