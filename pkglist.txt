@@ -5,9 +5,9 @@ alsa-utils
 base
 base-devel
 betterlockscreen
+bluetuith
 bluez
 bluez-utils
-chromium
 clang
 cmake
 conky
@@ -16,6 +16,7 @@ ctags
 dmenu
 docker
 docker-buildx
+docker-compose
 dunst
 efibootmgr
 eza
@@ -25,7 +26,9 @@ firefox
 fzf
 gdb
 git
+github-cli
 globalprotect-openconnect-git
+go
 grub
 imwheel
 jq
@@ -33,9 +36,11 @@ lazygit
 libnotify
 lightdm
 lightdm-gtk-greeter
+lightdm-mini-greeter
 linux
 linux-firmware
 lld
+lua-language-server
 lynx
 maim
 man-pages
@@ -55,6 +60,9 @@ ntp
 openssh
 pacman-contrib
 pandoc-cli
+paru
+paru-debug
+pass
 pavucontrol
 picom
 pipewire
@@ -65,6 +73,8 @@ python
 python-pip
 python-requests
 ripgrep
+stow
+strace
 texlive-basic
 texlive-binextra
 texlive-fontsextra
@@ -81,6 +91,7 @@ ueberzugpp
 unzip
 wireplumber
 xclip
+xdotool
 xf86-video-vesa
 xmobar
 xmonad
