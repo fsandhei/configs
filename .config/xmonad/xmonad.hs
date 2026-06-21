@@ -122,6 +122,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
      -- Rotate through the available layout algorithms
     , ((modm,               xK_space ), sendMessage NextLayout)
 
+    , ((modm,               xK_b     ), sendMessage ToggleStruts)
+
     --  Reset the layouts on the current workspace to default
     , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
 
@@ -275,7 +277,8 @@ full = renamed [Replace "full"]
       $ subLayout [] (noBorders Simplest)
       $ Full
 
-myLayout = avoidStruts $ lessBorders (Combine Difference Screen OnlyFloat) $ myDefaultLayout
+-- avoidStruts hinders the layouts to overlap with the status bar.
+myLayout = avoidStruts $ lessBorders (Combine Difference Screen OnlyFloat) $ myDefaultLayout
    where
       myDefaultLayout = withBorder myBorderWidth threeCol ||| tall ||| full
 
@@ -340,7 +343,7 @@ myXmobarPP = xmobarPP {
    , ppHiddenNoWindows = xmobarColor "#c792ea" ""         -- Hidden workspaces but no windows in xmobar
    , ppSep = "<fc=#666666> | </fc>"                       -- Separators in xmobar
    , ppTitle = xmobarColor "#0acdff" "" . shorten 30      -- Title of active window in xmobar
-   , ppOrder = \(ws:l:t:_) -> [ws]
+   , ppOrder = \(ws:l:t:_) -> [ws, l]
 }
 
 -- Assumes a dual screen set up. Does not hurt if the second screen is not connected.
