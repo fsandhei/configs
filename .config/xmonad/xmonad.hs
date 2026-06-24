@@ -173,10 +173,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm              , xK_q     ), spawn "xmonad --recompile && xmonad --restart")
 
     -- Increase audio by 2%
-    , ((0                , xF86XK_AudioLowerVolume), spawn ("amixer -q sset Master 5%-"))
+    , ((0                , xF86XK_AudioLowerVolume), spawn ("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"))
 
     -- Decrease audio by 2%
-    , ((0                , xF86XK_AudioRaiseVolume), spawn ("amixer -q sset Master 5%+"))
+    , ((0                , xF86XK_AudioRaiseVolume), spawn ("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"))
 
     -- Toggle audio 
     , ((0                , xF86XK_AudioMute), spawn ("amixer -q sset Master toggle"))
