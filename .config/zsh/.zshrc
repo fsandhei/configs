@@ -16,7 +16,7 @@ export LC_ALL=en_US.UTF-8
 [ -f "$ZDOTDIR/aliasrc" ]  && source "$ZDOTDIR/aliasrc"
 [ ! -d "$HOME/.cache/zsh" ] && mkdir "$HOME/.cache/zsh"
 
-fpath=(/home/fredrik/.config/zsh/plugins/zsh-completions/src
+fpath=($HOME/.config/zsh/plugins/zsh-completions/src
        $ZDOTDIR/.zfunc
        $fpath
 )
