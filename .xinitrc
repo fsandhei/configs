@@ -33,6 +33,13 @@ xrandr
 "$HOME"/.local/bin/setup-screen.sh
 "$HOME"/.local/bin/center-cursor.sh
 
+INACTIVITY_TIMER_SEC=1800
+
+# Set a new inactivity timer to 1800 seconds (30 minutes). This will prevent the
+# screen from blacking out after 600 seconds (10 minutes).
+# The three values given are for standby, suspend and off mode.
+xset dpms "${INACTIVITY_TIMER_SEC}" "${INACTIVITY_TIMER_SEC}" "${INACTIVITY_TIMER_SEC}"
+
 # By default, the X shaped cursor appears in those window managers
 # that don't set a default cursor.
 # We therefore set the cursor, just in case.
