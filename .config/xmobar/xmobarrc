@@ -2,11 +2,18 @@ Config { font         = "Hack Nerd Font Mono 9"
        , additionalFonts = [ "SpaceMono Nerd Font 8" ]
 
        -- Catppuccin Mocha
-       , bgColor      = "#1e1e2e"   -- base
-       , fgColor      = "#cdd6f4"   -- text
-       , borderColor  = "#313244"   -- surface0
-       , border       = TopB
-       , alpha        = 255
+       -- , bgColor      = "#1e1e2e"   -- base
+       -- , fgColor      = "#cdd6f4"   -- text
+       -- , borderColor  = "#313244"   -- surface0
+       -- , border       = TopB
+       -- , alpha        = 255
+
+       -- Catppuccin Frappe
+       , bgColor         = "#303446"
+       , fgColor         = "#C6D0F5"
+       , borderColor     = "#A5ADCE"
+       , border          = TopB
+       , alpha           = 255
 
        , position     = TopSize L 100 24
        , textOffset   = -1
