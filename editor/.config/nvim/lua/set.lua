@@ -17,7 +17,6 @@ vim.opt.autoindent = true
 vim.opt.laststatus = 2
 -- Don't show the active nvim mode. Let lualine handle that.
 vim.opt.showmode = false
-vim.opt.clipboard:prepend { "unnamed", "unnamedplus" }
 -- Fast update time
 vim.opt.updatetime = 50
 
