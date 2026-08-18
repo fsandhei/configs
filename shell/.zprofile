@@ -11,12 +11,17 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export WINIT_X11_SCALE_FACTOR=1
 
 export PATH="$HOME/.local/bin:$PATH:$HOME/.zsh:$HOME/bin:$HOME/.cargo/bin:$VCPKG_ROOT:$HOME/go/bin"
+export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
    exec startx
 fi
 
 export SSH_ENV="$HOME/.ssh/environment"
+
+export PATH="/usr/local/go/bin:$PATH"
+export PATH="$(go env GOPATH)/bin:$PATH"
+export CARGO_NET_GIT_FETCH_WITH_CLI=true
 
 # Starts ssh-agent by writing the output of ssh-agent into a file determined by $SSH_ENV
 # and finally sources the contents of $SSH_ENV to the environment.
