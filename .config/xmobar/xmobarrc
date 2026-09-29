@@ -78,7 +78,7 @@ Config { font         = "Hack Nerd Font Mono 9"
                , "--"
                , "-o" , "<fn=1>󰁹</fn> <left>% (<timeleft>)"
                , "-O" , "<fn=1>󰂄</fn> <fc=#f9e2af><left>%</fc>"
-               , "-i" , "<fn=1>󰁹</fn> <fc=#a6e3a1>Full</fc>"
+               , "-i" , "<fn=1>󰁹</fn><fc=#a6e3a1></fc>"
                ] 50
 
              -- Date & time — Catppuccin Mauve

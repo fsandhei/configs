@@ -20,6 +20,9 @@ determine_monitor_geometry() {
     local screen_info
 
     while IFS= read -r line; do
+        # Find the pixel / physical length of the active monitors, expected
+        # in the format "<pixel>/<physical>x<pixel>/<physical>+<pixel_width_offset>+<pixel_height_offset>,
+        # where the layout is <width>x<height>+<pixel_width_offset>+<pixel_height_offset>.
         curr_geometry="$(echo $line | grep --only-matching '[0-9]*/[0-9]*x[0-9]*/[0-9]*+[0-9]*+[0-9]*')"
 
         if [ -z "$curr_geometry" ]; then

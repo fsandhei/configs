@@ -8,9 +8,6 @@
 # This script requires [WirePlumber](https://wiki.archlinux.org/title/WirePlumber) in order to work.
 #
 # See https://wiki.archlinux.org/title/Advanced_Linux_Sound_Architecture#top-page for more information
-#
-# TODO: Need to figure out if something else than amixer should be used. Bluetooth devices cannot be configured
-# through amixer. Perhaps wireplumber?
 
 require_wpctl() {
     if ! command -v wpctl >/dev/null; then
@@ -29,13 +26,14 @@ emit_audio_status() {
         audio_status="off"
     fi
 
+    # Emotes fetched from NerdFont.
     sound_on_emote="󰕾"
     sound_off_emote="󰖁"
 
     if [[ "$audio_status" = "on" ]]; then
         printf "<fn=1>%s</fn> (%s%%)" "$sound_on_emote" "$audio_percentage"
     else
-        printf "<fn=1>%s</fn> " "$sound_off_emote"
+        printf "<fn=1>%s</fn>" "$sound_off_emote"
     fi
 }
 
