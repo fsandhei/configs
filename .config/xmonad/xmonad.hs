@@ -100,7 +100,7 @@ myCustomKeys c = concat
 
   , section "Programs"
       [ ("M-C-f", run "File manager (Thunar)"  "thunar")
-      , ("M-S-f", run "Firefox"                "firefox")
+      , ("M-S-f", run "Web Browser"            "vivaldi")
       , ("M-S-g", run "Chromium"               "chromium")
       , ("M-S-u", run "Audio mixer (pavucontrol)" "pavucontrol")
       , ("M-S-b", run "Bluetooth (bluetuith)"  "alacritty -e bluetuith")
@@ -181,6 +181,7 @@ myManageHook = composeAll
   [ resource  =? "desktop_window" --> doIgnore
   , resource  =? "kdesktop"       --> doIgnore
   , className =? "firefox"        --> doShift wsWww
+  , className =? "Vivaldi-stable" --> doShift wsWww
   , className =? "Thunar"         --> thunarRect
   , className =? "Pavucontrol"    --> doCenterFloat
   , isDialog                      --> doCenterFloat
