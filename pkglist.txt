@@ -1,9 +1,9 @@
 7zip
 adapta-gtk-theme
 alacritty
-alsa-utils
 base
 base-devel
+bat
 betterlockscreen
 bluetuith
 bluez
@@ -73,6 +73,7 @@ python
 python-pip
 python-requests
 ripgrep
+shellcheck
 stow
 strace
 texlive-basic
@@ -83,12 +84,14 @@ texlive-latex
 texlive-latexrecommended
 thunar
 tmux
+tree-sitter-cli
 ttf-hack-nerd
 ttf-nerd-fonts-symbols
 ttf-nerd-fonts-symbols-mono
 ttf-space-mono-nerd
 ueberzugpp
 unzip
+vivaldi
 wireplumber
 xclip
 xdotool
