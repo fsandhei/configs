@@ -1,5 +1,6 @@
-Config { font         = "Hack Nerd Font Mono 9"
-       , additionalFonts = [ "SpaceMono Nerd Font 8" ]
+Config {
+      font = "Hack Nerd Font Mono 9"
+    , additionalFonts = [ "SpaceMono Nerd Font 8" ]
 
        -- Catppuccin Mocha
        -- , bgColor      = "#1e1e2e"   -- base
