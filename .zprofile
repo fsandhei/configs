@@ -1,16 +1,26 @@
-export BROWSER="firefox"
+export BROWSER="vivaldi-stable"
 export EDITOR="nvim"
 export VISUAL="nvim"
 export ZDOTDIR="$HOME/.config/zsh"
 export PDF="zathura"
 export XDG_CONFIG_HOME="$HOME/.config"
+
 # Scaling factor for alacritty. Alacritty scales with dpi by default.
 # When having two screens of different sizes this means that the font size
 # can be ridiculously small. We try to override this by setting this environment variable
 # so we don't scale, but rather keep a fixed font size.
 export WINIT_X11_SCALE_FACTOR=1
 
-export PATH="$HOME/.local/bin:$PATH:$HOME/.zsh:$HOME/bin:$HOME/.cargo/bin:$VCPKG_ROOT:$HOME/go/bin"
+local path_prepends=(
+   $HOME/.local/bin
+   $HOME/.zsh
+   $HOME/bin
+   $HOME/.cargo/bin
+   $VCPKG_ROOT
+   $HOME/go/bin
+)
+
+path=($path_prepends $path)
 
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
    exec startx
@@ -27,7 +37,6 @@ ssh_agent_start() {
    source "${SSH_ENV}" > /dev/null
 
    ssh-add -q $HOME/.ssh/id_ed25519
-   ssh-add -q $HOME/.ssh/id_ed25519_nordic
 }
 
 #if [ $(ps ax | grep "[s]sh-agent" | wc -l) -eq 0 ]; then
